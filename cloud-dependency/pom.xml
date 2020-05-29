@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.amoe</groupId>
+    <artifactId>cloud-dependency</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>cloud-dependency</name>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>${java.version}</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <cloud.common.version>1.0.0-SNAPSHOT</cloud.common.version>
+        <cloud.account.version>1.0.0-SNAPSHOT</cloud.account.version>
+
+        <spring.dependencies.version>2.2.6.RELEASE</spring.dependencies.version>
+        <spring.cloud.version>Hoxton.SR3</spring.cloud.version>
+        <lombok.version>1.18.10</lombok.version>
+        <spring.feign.version>1.4.7.RELEASE</spring.feign.version>
+        <spring.hystrix.version>2.2.0.RELEASE</spring.hystrix.version>
+        <spring.eureka.server.version>2.2.2.RELEASE</spring.eureka.server.version>
+
+        <tomcat.embed.core.version>9.0.35</tomcat.embed.core.version>
+        <commons-lang3.version>3.10</commons-lang3.version>
+        <mybatis-plus.version>3.3.1.tmp</mybatis-plus.version>
+        <hibernate.validator.version>6.0.18.Final</hibernate.validator.version>
+        <caffeine.version>2.8.4</caffeine.version>
+        <guava.version>28.2-android</guava.version>
+
+        <spring-boot-maven-plugin.version>2.2.6.RELEASE</spring-boot-maven-plugin.version>
+        <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.amoe</groupId>
+                <artifactId>cloud-common</artifactId>
+                <version>${cloud.common.version}</version>
+            </dependency>
+
+            <!-- spring cloud 依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+                <version>${spring.eureka.server.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-feign</artifactId>
+                <version>${spring.feign.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-netflix-hystrix</artifactId>
+                <version>${spring.hystrix.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${tomcat.embed.core.version}</version>
+            </dependency>
+
+            <!-- 工具 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!--
+                   maven统一模块版本号管理插件，使用方式：
+                   子模块不定义version属性，父模块定义所依赖的子模块的版本号（即父模块的版本号就是子模块的版本号）
+                   通过点击IDEA右侧功能栏上的maven功能区，选择父模块中Plugins里面的versions插件，点击version:set命令
+                   控制台会打印日志并提示输入新版本号，输入执行之后再去执行打包。
+                -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${versions-maven-plugin.version}</version>
+                    <configuration>
+                        <generateBackupPoms>false</generateBackupPoms>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
