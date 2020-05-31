@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: cloud-account
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
   datasource:
     username: root
     password: root
@@ -25,6 +29,18 @@ spring:
     loadbalancer:
       ribbon:
         enabled: false
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
 
 eureka:
   client:

@@ -1,5 +1,6 @@
 package io.amoe.cloud.account.feign.impl;
 
+import io.amoe.cloud.account.entity.SysUser;
 import io.amoe.cloud.account.feign.ISysUserFeign;
 import io.amoe.cloud.base.AbstractProvider;
 import io.amoe.cloud.entity.R;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SysUserFeignImpl extends AbstractProvider implements ISysUserFeign {
     @Override
-    public R<?> getUserById(Long id) {
-        return error();
+    public R<SysUser> getUserById(Long id) {
+        return error(null);
     }
 }

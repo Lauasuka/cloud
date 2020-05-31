@@ -37,6 +37,24 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>HdrHistogram</artifactId>
+                    <groupId>org.hdrhistogram</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-netflix-hystrix</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>woodstox-core</artifactId>
+                    <groupId>com.fasterxml.woodstox</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-configuration</artifactId>
+                    <groupId>commons-configuration</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

@@ -33,41 +33,35 @@ import java.util.Optional;
 @ControllerAdvice
 public class GlobalExceptionHandler extends AbstractProvider {
 
-    private R<?> customizeExceptionHandle(HttpServletResponse response, AbstractException ex) {
-        Optional<StackTraceElement> error = Arrays.stream(ex.getStackTrace()).findFirst();
-        log.error(
-                "异常[{}]:[{}],异常位置[{}]-行号[{}]",
-                ex.getClass().getSimpleName(),
-                ex.getMessage(),
-                error.map(StackTraceElement::getClassName).orElse("未知"),
-                error.map(StackTraceElement::getLineNumber).orElse(0)
-        );
+    private R<Void> customizeExceptionHandle(HttpServletResponse response, AbstractException ex) {
         BizResponseStatus status = ex.getStatus();
         response.setStatus(status.getCode());
-        return getResponse(status);
+        R<Void> r = getResponse(status);
+        logError(ex, r.getMsg());
+        return r;
     }
 
     private void logError(Exception ex, @Nullable String msg) {
         Optional<StackTraceElement> error = Arrays.stream(ex.getStackTrace()).findFirst();
         log.error(
-                "异常[{}]:[{}],发生位置[{}]-[line：{}]",
+                "[Exception:{}]:[{}],[Exception position:{}]-[line:{}]",
                 ex.getClass().getSimpleName(),
                 StringUtils.isNotBlank(msg) ? msg : ex.getMessage(),
-                error.map(StackTraceElement::getClassName).orElse("未知"),
-                error.map(StackTraceElement::getLineNumber).orElse(0)
+                error.map(StackTraceElement::getClassName).orElse("Unknown"),
+                error.map(StackTraceElement::getLineNumber).orElse(-1)
         );
     }
 
     @ResponseBody
     @ExceptionHandler(BizException.class)
-    public R<?> bizExceptionHandle(HttpServletResponse response, BizException ex) {
+    public R<Void> bizExceptionHandle(HttpServletResponse response, BizException ex) {
         return customizeExceptionHandle(response, ex);
     }
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public R<?> argsNotValid(MethodArgumentNotValidException ex) {
+    public R<Void> argsNotValid(MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
         List<ObjectError> errors = bindingResult.getAllErrors();
         String msg = errors.stream().findFirst().map(DefaultMessageSourceResolvable::getDefaultMessage).orElseThrow(() -> new BizException(BizResponseStatus.PARAM_ERROR));
@@ -76,7 +70,7 @@ public class GlobalExceptionHandler extends AbstractProvider {
             msg = mg.getMessage(placeholder, null, getCurrentLocale());
         }
         logError(ex, msg);
-        R<?> response = getResponse(BizResponseStatus.PARAM_ERROR);
+        R<Void> response = getResponse(BizResponseStatus.PARAM_ERROR);
         response.setMsg(msg);
         return response;
     }
@@ -84,8 +78,7 @@ public class GlobalExceptionHandler extends AbstractProvider {
     @ResponseBody
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public R<?> unprocessableEntity(HttpMessageNotReadableException ex) {
-        StackTraceElement stackTrace = ex.getStackTrace()[0];
+    public R<Void> unprocessableEntity(HttpMessageNotReadableException ex) {
         logError(ex, null);
         return getResponse(BizResponseStatus.UNSUPPORTED_MEDIA_TYPE);
     }
@@ -93,9 +86,8 @@ public class GlobalExceptionHandler extends AbstractProvider {
     @ResponseBody
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public R<?> commonExceptionHandle(RuntimeException ex) {
-        StackTraceElement stackTrace = ex.getStackTrace()[0];
+    public R<Void> commonExceptionHandle(RuntimeException ex) {
         logError(ex, null);
-        return error(null);
+        return error();
     }
 }

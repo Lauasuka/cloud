@@ -1,5 +1,7 @@
 package io.amoe.cloud.base;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.amoe.cloud.entity.PageData;
 import io.amoe.cloud.entity.R;
 import io.amoe.cloud.enums.BizResponseStatus;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +21,8 @@ import java.util.Locale;
 public class AbstractProvider {
 
     private static final String KEY_PREFIX = "response.";
+    private static final String HEADER_FORWARD = "Location";
+    private static final String ERROR_URI = "/error";
 
     @Resource
     protected HttpServletRequest request;
@@ -30,7 +34,20 @@ public class AbstractProvider {
     @Qualifier("messageSource")
     protected MessageSource mg;
 
-    public <E> R<E> success() {
+    public <E> PageData<E> pageDataBuilder(IPage<E> page) {
+        if (page == null) {
+            return null;
+        }
+        PageData<E> pd = new PageData<>();
+        pd.setCurrentPage(page.getCurrent());
+        pd.setPages(page.getPages());
+        pd.setPageSize(page.getSize());
+        pd.setTotal(page.getTotal());
+        pd.setRecords(page.getRecords());
+        return pd;
+    }
+
+    public R<Void> success() {
         return success(null);
     }
 
@@ -38,7 +55,7 @@ public class AbstractProvider {
         return getR(BizResponseStatus.OK, object);
     }
 
-    public <E> R<E> error() {
+    public R<Void> error() {
         return error(null);
     }
 
@@ -46,12 +63,17 @@ public class AbstractProvider {
         return getR(BizResponseStatus.ERROR, object);
     }
 
-    public R<?> getResponse(BizResponseStatus status) {
+    public R<Void> getResponse(BizResponseStatus status) {
         return getR(status, null);
     }
 
     public <E> R<E> getResponse(BizResponseStatus status, E object) {
         return getR(status, object);
+    }
+
+    public void forward(String location) {
+        setHeader(HEADER_FORWARD, StringUtils.isNotBlank(location) ? location : ERROR_URI);
+        response.setStatus(HttpServletResponse.SC_FOUND);
     }
 
     private <E> R<E> getR(BizResponseStatus status, E object) {

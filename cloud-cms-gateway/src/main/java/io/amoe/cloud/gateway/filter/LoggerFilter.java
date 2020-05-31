@@ -12,11 +12,12 @@ import reactor.core.publisher.Mono;
 
 /**
  * @author Amoe
- * @date 2020/4/23 15:22
  */
 public class LoggerFilter implements GlobalFilter, Ordered {
 
     Logger logger = LoggerFactory.getLogger(LoggerFilter.class);
+
+    private static final String UA = "user-agent";
 
     @Override
     public int getOrder() {
@@ -27,12 +28,13 @@ public class LoggerFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         logger.info("========================================== Start ==========================================");
-        logger.info("访问地址    : {}", request.getPath());
-        logger.info("请求方式    : {}", request.getMethod());
-        logger.info("请求参数    : {}", request.getQueryParams());
-        logger.info("实体参数    : {}", request.getBody().toString());
-        logger.info("访问者IP    : {}", request.getRemoteAddress());
-        logger.info("cookie内容 : {}", request.getCookies());
+        logger.info("Request.URI       : {}", request.getURI().toString());
+        logger.info("Request.Path      : {}", request.getPath());
+        logger.info("Request.Method    : {}", request.getMethod());
+        logger.info("Request.Params    : {}", request.getQueryParams());
+        logger.info("Request.IP        : {}", request.getRemoteAddress());
+        logger.info("Request.UA        : {}", request.getHeaders().get(UA));
+        logger.info("Request.Cookies   : {}", request.getCookies());
         logger.info("========================================== End ==========================================");
         return chain.filter(exchange);
     }

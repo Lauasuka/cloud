@@ -1,10 +1,11 @@
 package io.amoe.cloud.account.provider;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.amoe.cloud.account.dto.PostUserDTO;
 import io.amoe.cloud.account.entity.SysUser;
 import io.amoe.cloud.account.service.SysUserService;
-import io.amoe.cloud.annotation.WebLog;
 import io.amoe.cloud.base.AbstractProvider;
+import io.amoe.cloud.entity.PageData;
 import io.amoe.cloud.entity.R;
 import io.amoe.cloud.enums.BizResponseStatus;
 import io.amoe.cloud.exception.BizException;
@@ -25,22 +26,27 @@ import java.util.Optional;
  * @date 2020/4/10 10:40
  */
 @Slf4j
-@WebLog("账户模块")
 @RestController
 public class SysUserProvider extends AbstractProvider {
 
     @Resource
     private SysUserService sysUserService;
 
+    @GetMapping("users")
+    public R<PageData<SysUser>> getUsers(Long currentPage, Long pageSize) {
+        IPage<SysUser> usersPage = sysUserService.getUsersPage(currentPage, pageSize);
+        return success(pageDataBuilder(usersPage));
+    }
+
     @GetMapping("user/{id}")
-    public R<SysUser> getUserById(@PathVariable  Long id) {
+    public R<SysUser> getUserById(@PathVariable Long id) {
         SysUser user = sysUserService.getById(id);
         Optional.ofNullable(user).orElseThrow(() -> new BizException(BizResponseStatus.NOT_FOUND));
         return success(user);
     }
 
     @PostMapping("user")
-    public R<?> postUser(@RequestBody @Validated PostUserDTO dto) {
+    public R<Void> postUser(@RequestBody @Validated PostUserDTO dto) {
         SysUser user = new SysUser();
         BeanUtils.copyProperties(dto, user);
         sysUserService.addUser(user);

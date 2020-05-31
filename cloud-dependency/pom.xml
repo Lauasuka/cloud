@@ -17,22 +17,39 @@
         <cloud.common.version>1.0.0-SNAPSHOT</cloud.common.version>
         <cloud.account.version>1.0.0-SNAPSHOT</cloud.account.version>
 
-        <spring.dependencies.version>2.2.6.RELEASE</spring.dependencies.version>
-        <spring.cloud.version>Hoxton.SR3</spring.cloud.version>
-        <lombok.version>1.18.10</lombok.version>
+        <!-- spring cloud dependencies -->
+        <spring.dependencies.version>2.3.2.RELEASE</spring.dependencies.version>
+        <spring.cloud.version>Hoxton.SR6</spring.cloud.version>
         <spring.feign.version>1.4.7.RELEASE</spring.feign.version>
         <spring.hystrix.version>2.2.0.RELEASE</spring.hystrix.version>
         <spring.eureka.server.version>2.2.2.RELEASE</spring.eureka.server.version>
+        <spring.session.version>Corn-SR2</spring.session.version>
 
+        <!-- web -->
         <tomcat.embed.core.version>9.0.35</tomcat.embed.core.version>
+        <jjwt.version>0.9.1</jjwt.version>
+
+        <!-- tools -->
+        <lombok.version>1.18.10</lombok.version>
         <commons-lang3.version>3.10</commons-lang3.version>
+        <guava.version>28.2-android</guava.version>
+        <commons-pool2.version>2.7.0</commons-pool2.version>
+
+        <!--  database  -->
         <mybatis-plus.version>3.3.1.tmp</mybatis-plus.version>
         <hibernate.validator.version>6.0.18.Final</hibernate.validator.version>
-        <caffeine.version>2.8.4</caffeine.version>
-        <guava.version>28.2-android</guava.version>
 
+        <!--  cache  -->
+        <caffeine.version>2.8.4</caffeine.version>
+
+        <!--  aliyun  -->
+        <aliyun-sdk-oss.version>3.10.2</aliyun-sdk-oss.version>
+
+        <!--  plugins  -->
         <spring-boot-maven-plugin.version>2.2.6.RELEASE</spring-boot-maven-plugin.version>
         <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
+        <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
+        <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -43,7 +60,7 @@
                 <version>${cloud.common.version}</version>
             </dependency>
 
-            <!-- spring cloud 依赖 -->
+            <!-- spring cloud dependencies -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -58,6 +75,12 @@
                 <version>${spring.dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.session</groupId>
+                <artifactId>spring-session-bom</artifactId>
+                <version>${spring.session.version}</version>
             </dependency>
 
             <dependency>
@@ -78,13 +101,21 @@
                 <version>${spring.hystrix.version}</version>
             </dependency>
 
+            <!-- web -->
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
                 <version>${tomcat.embed.core.version}</version>
             </dependency>
 
-            <!-- 工具 -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+
+            <!-- tools -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
@@ -98,8 +129,27 @@
             </dependency>
 
             <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+
+            <!--  database  -->
+            <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
@@ -109,16 +159,18 @@
                 <version>${hibernate.validator.version}</version>
             </dependency>
 
+            <!--  cache  -->
             <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
             </dependency>
 
+            <!--  aliyun  -->
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun-sdk-oss.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -152,6 +204,18 @@
                     <configuration>
                         <generateBackupPoms>false</generateBackupPoms>
                     </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>${dockerfile-maven-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven-dependency-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

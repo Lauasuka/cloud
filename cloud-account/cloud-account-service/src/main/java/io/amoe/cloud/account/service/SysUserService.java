@@ -1,13 +1,16 @@
 package io.amoe.cloud.account.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.amoe.cloud.account.entity.SysUser;
 import io.amoe.cloud.account.mapper.SysUserMapper;
 import io.amoe.cloud.exception.BizException;
 import io.amoe.cloud.tools.EncryptUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
 
 import static io.amoe.cloud.enums.BizResponseStatus.USER_ACCOUNT_EXIST;
 
@@ -18,19 +21,28 @@ import static io.amoe.cloud.enums.BizResponseStatus.USER_ACCOUNT_EXIST;
 @Service
 public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
 
+    public IPage<SysUser> getUsersPage(Long currentPage, Long pageSize) {
+        Page<SysUser> page = new Page<>(currentPage, pageSize);
+        return this.page(page);
+    }
+
     public SysUser addUser(SysUser user) {
         String account = user.getAccount();
         SysUser tempUser = this.getByAccount(account);
         if (tempUser != null) {
             throw new BizException(USER_ACCOUNT_EXIST);
         }
-        String salt = RandomStringUtils.randomAlphabetic(12);
+        String salt = EncryptUtils.getSalt();
         user.setSalt(salt);
-        user.setPassword(EncryptUtils.getEncryptPassword(user.getPassword(), salt));
+        user.setPassword(EncryptUtils.genMd5Pwd(user.getPassword(), salt));
         this.save(user);
         return user;
     }
 
+    @Override
+    public SysUser getById(Serializable id) {
+        return super.getById(id);
+    }
 
     public SysUser getByAccount(String account) {
         if (StringUtils.isBlank(account)) {

@@ -54,7 +54,49 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>io.amoe.cloud.CloudRegisterApplication</mainClass>
+                    <layout>ZIP</layout>
+                    <includes>
+                        <include>
+                            <groupId>nothing</groupId>
+                            <artifactId>nothing</artifactId>
+                        </include>
+                    </includes>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/all-lib
+                            </outputDirectory>
+                            <excludeGroupIds>
+                                ${project.groupId}
+                            </excludeGroupIds>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-cloud-dependencies</id>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/cloud-lib
+                            </outputDirectory>
+                            <includeGroupIds>
+                                ${project.groupId}
+                            </includeGroupIds>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

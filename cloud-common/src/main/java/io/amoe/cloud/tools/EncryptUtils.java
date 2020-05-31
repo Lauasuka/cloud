@@ -1,6 +1,7 @@
 package io.amoe.cloud.tools;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -14,27 +15,67 @@ public final class EncryptUtils {
     private static final String ALGORITHM_MD5 = "md5";
     private static final int DEFAULT_LEN = 12;
 
+    /**
+     * Get default length salt
+     * @return salt
+     */
     public static String getSalt() {
         return getSalt(DEFAULT_LEN);
     }
 
+    /**
+     * Get the salt of the specified length
+     * if length <= 0,will get the default length
+     * @param length salt length
+     * @return salt
+     */
     public static String getSalt(int length) {
         if (length <= 0) {
-            return RandomStringUtils.random(12);
+            return RandomStringUtils.randomAlphabetic(DEFAULT_LEN);
         }
-        return RandomStringUtils.random(length);
+        return RandomStringUtils.randomAlphabetic(length);
     }
 
-    public static String getEncryptPassword(String sourcePwd, String salt) {
-        String encryptStr = sourcePwd + salt;
-        return md5(encryptStr);
+    /**
+     * Generate md5 password
+     * @param rawPwd raw password
+     * @param salt salt
+     * @return encode password
+     */
+    public static String genMd5Pwd(String rawPwd, String salt) {
+        if (StringUtils.isBlank(rawPwd)) {
+            throw new IllegalArgumentException("Raw password must not be blank");
+        }
+        String mixinPwd = rawPwd + salt;
+        return md5(md5(mixinPwd));
     }
 
-    private static String md5(String text) {
+    /**
+     * Match the raw password and encode password
+     * @param rawPwd
+     * @param salt
+     * @param encodePwd
+     * @return match result
+     */
+    public static Boolean matchMd5Pwd(String rawPwd, String salt, String encodePwd) {
+        if (StringUtils.isBlank(rawPwd)) {
+            throw new IllegalArgumentException("Raw password must not be blank");
+        }
+        if (StringUtils.isBlank(encodePwd)) {
+            throw new IllegalArgumentException("Encode password must not be blank");
+        }
+        String matchPwd = md5(md5(rawPwd + salt));
+        return matchPwd.equals(encodePwd);
+    }
+
+    private static String md5(String raw) {
+        if (StringUtils.isBlank(raw)) {
+            throw new IllegalArgumentException("Raw text must not be blank");
+        }
         byte[] secretBytes;
         try {
             secretBytes = MessageDigest.getInstance(ALGORITHM_MD5).digest(
-                    text.getBytes());
+                    raw.getBytes());
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Not these algorithm");
         }
@@ -45,5 +86,4 @@ public final class EncryptUtils {
         }
         return md5code.toString();
     }
-
 }

@@ -1,5 +1,6 @@
 package io.amoe.cloud.account.feign;
 
+import io.amoe.cloud.account.entity.SysUser;
 import io.amoe.cloud.account.feign.impl.SysUserFeignImpl;
 import io.amoe.cloud.entity.R;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,5 +15,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ISysUserFeign {
 
     @GetMapping("user/{id}")
-    R<?> getUserById(@PathVariable Long id);
+    R<SysUser> getUserById(@PathVariable Long id);
 }
