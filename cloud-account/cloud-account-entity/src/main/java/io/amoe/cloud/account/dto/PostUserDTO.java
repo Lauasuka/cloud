@@ -4,9 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
 import java.io.Serializable;
-import java.time.LocalDate;
 
 /**
  * @author Amoe
@@ -34,17 +32,6 @@ public class PostUserDTO implements Serializable {
      */
     @NotBlank(message = "{blank.name}")
     private String name;
-
-    /**
-     * 生日
-     */
-    @Past(message = "{past.date.birthday}")
-    private LocalDate birthday;
-
-    /**
-     * 性别(字典)
-     */
-    private String sex;
 
     /**
      * 电子邮件

@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 
+import static io.amoe.cloud.enums.BizResponseStatus.ACCOUNT_OR_PASSWORD_ERROR;
 import static io.amoe.cloud.enums.BizResponseStatus.USER_ACCOUNT_EXIST;
+import static io.amoe.cloud.enums.BizResponseStatus.USER_ACCOUNT_NOT_EXIST;
 
 /**
  * @author Amoe
@@ -49,5 +51,19 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
             return null;
         }
         return this.lambdaQuery().eq(SysUser::getAccount, account).one();
+    }
+
+    public SysUser getByAccountAndPassword(String account, String password) {
+        SysUser user = this.getByAccount(account);
+        if (user == null) {
+            throw new BizException(USER_ACCOUNT_NOT_EXIST);
+        }
+        String slat = user.getSalt();
+        String trulyPwd = user.getPassword();
+        String md5Pwd = EncryptUtils.genMd5Pwd(password, slat);
+        if (!trulyPwd.equals(md5Pwd)) {
+            throw new BizException(ACCOUNT_OR_PASSWORD_ERROR);
+        }
+        return user;
     }
 }

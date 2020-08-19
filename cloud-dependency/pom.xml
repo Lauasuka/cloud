@@ -36,7 +36,7 @@
         <commons-pool2.version>2.7.0</commons-pool2.version>
 
         <!--  database  -->
-        <mybatis-plus.version>3.3.1.tmp</mybatis-plus.version>
+        <mybatis-plus.version>3.4.0</mybatis-plus.version>
         <hibernate.validator.version>6.0.18.Final</hibernate.validator.version>
 
         <!--  cache  -->
@@ -44,6 +44,7 @@
 
         <!--  aliyun  -->
         <aliyun-sdk-oss.version>3.10.2</aliyun-sdk-oss.version>
+        <aliyun-java-sdk-core.version>4.5.7</aliyun-java-sdk-core.version>
 
         <!--  plugins  -->
         <spring-boot-maven-plugin.version>2.2.6.RELEASE</spring-boot-maven-plugin.version>
@@ -114,7 +115,6 @@
                 <version>${jjwt.version}</version>
             </dependency>
 
-
             <!-- tools -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -171,6 +171,12 @@
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
                 <version>${aliyun-sdk-oss.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyun-java-sdk-core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

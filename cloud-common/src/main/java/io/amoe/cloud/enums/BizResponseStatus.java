@@ -15,7 +15,10 @@ public enum BizResponseStatus {
     /** 4XX：客户端错误，请求包含语法错误或无法完成请求 */
     PARAM_ERROR(400, "参数错误"),
     USER_ERROR(400, "账号异常"),
+    ACCOUNT_OR_PASSWORD_ERROR(400, "账号或密码错误"),
     USER_ACCOUNT_EXIST(400, "账号已存在"),
+    USER_ACCOUNT_NOT_EXIST(400, "账号不存在"),
+
     NOT_FOUND(404, "您所请求的资源无法找到"),
     UNSUPPORTED_MEDIA_TYPE(415, "不支持的请求媒体格式"),
 

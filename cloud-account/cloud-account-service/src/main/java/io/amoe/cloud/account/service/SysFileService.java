@@ -3,6 +3,7 @@ package io.amoe.cloud.account.service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.amoe.cloud.account.entity.SysFile;
 import io.amoe.cloud.account.mapper.SysFileMapper;
+import io.amoe.cloud.enums.StatusType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class SysFileService extends ServiceImpl<SysFileMapper, SysFile> {
     @Transactional
     public void saveIfHashAbsent(SysFile file) {
-        if (null == getByHash(file.getHash())) {
+        SysFile sysFile = getByHash(file.getHash());
+        if (null == sysFile) {
             save(file);
+        } else {
+            sysFile.setInternetUrl(file.getInternetUrl());
+            sysFile.setIntranetUrl(file.getIntranetUrl());
+            sysFile.setName(file.getName());
+            sysFile.setStatus(StatusType.ENABLE.name());
+            updateById(sysFile);
         }
     }
 

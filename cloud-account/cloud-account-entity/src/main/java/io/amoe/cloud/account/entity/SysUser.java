@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDate;
-
 /**
  * @author Amoe
  * @date 2020/4/7 16:45
@@ -58,18 +56,6 @@ public class SysUser extends BaseEntity {
     private String name;
 
     /**
-     * 生日
-     */
-    @TableField("birthday")
-    private LocalDate birthday;
-
-    /**
-     * 性别(字典)
-     */
-    @TableField("sex")
-    private String sex;
-
-    /**
      * 电子邮件
      */
     @TableField("email")
@@ -91,7 +77,7 @@ public class SysUser extends BaseEntity {
      * 部门id(多个逗号隔开)
      */
     @TableField("dept_id")
-    private Long deptId;
+    private String deptId;
 
     /**
      * 状态(字典)

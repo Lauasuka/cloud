@@ -2,6 +2,7 @@ package io.amoe.cloud.account.provider;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.amoe.cloud.account.dto.PostUserDTO;
+import io.amoe.cloud.account.dto.PutUserDTO;
 import io.amoe.cloud.account.entity.SysUser;
 import io.amoe.cloud.account.service.SysUserService;
 import io.amoe.cloud.base.AbstractProvider;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,6 +52,14 @@ public class SysUserProvider extends AbstractProvider {
         SysUser user = new SysUser();
         BeanUtils.copyProperties(dto, user);
         sysUserService.addUser(user);
+        return success();
+    }
+
+    @PutMapping("user")
+    public R<Void> putUser(@RequestBody @Validated PutUserDTO dto) {
+        SysUser user = new SysUser();
+        BeanUtils.copyProperties(dto, user);
+        sysUserService.updateById(user);
         return success();
     }
 }
