@@ -1,0 +1,58 @@
+server:
+  port: 10201
+
+spring:
+  application:
+    name: cloud-account
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #新的驱动需要在URL中添加时区设置，否则会报错
+    url: jdbc:mysql://localhost:3306/cloud-account?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    hikari:
+      minimum-idle: 5
+      idle-timeout: 180000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      auto-commit: true
+      pool-name: cloud-account-pool
+      connection-test-query: SELECT 1
+      connection-timeout: 30000
+  messages:
+    basename: i18n/ValidationMessages
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://amoe:amoe@127.0.0.1:10101/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+    prefer-ip-address: true
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    banner: false
+  mapper-locations: io.amoe.account.**.xml

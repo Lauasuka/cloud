@@ -1,0 +1,30 @@
+server:
+  port: 10051
+
+spring:
+  application:
+    name: cloud-cms-gateway
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    gateway:
+      routes:
+        - id: cloud.account
+          uri: lb://cloud-account
+          predicates:
+            - Path=/cloud.account/**
+          filters:
+            - StripPrefix=1 #切割请求，去除/client/
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://amoe:amoe@127.0.0.1:10101/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+    prefer-ip-address: true
