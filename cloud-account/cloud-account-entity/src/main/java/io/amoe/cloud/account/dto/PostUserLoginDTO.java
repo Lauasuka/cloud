@@ -13,6 +13,10 @@ import java.io.Serializable;
 public class PostUserLoginDTO implements Serializable {
     @NotBlank(message = "{blank.account}")
     private String account;
+
     @NotBlank(message = "{blank.password}")
     private String password;
+
+    @NotBlank(message = "{blank.verification.code}")
+    private String code;
 }

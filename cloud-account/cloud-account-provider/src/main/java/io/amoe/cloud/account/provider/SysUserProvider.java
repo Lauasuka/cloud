@@ -2,6 +2,7 @@ package io.amoe.cloud.account.provider;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.amoe.cloud.account.dto.PostUserDTO;
+import io.amoe.cloud.account.dto.PostUserLoginDTO;
 import io.amoe.cloud.account.dto.PutUserDTO;
 import io.amoe.cloud.account.entity.SysUser;
 import io.amoe.cloud.account.service.SysUserService;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 /**
@@ -61,5 +64,21 @@ public class SysUserProvider extends AbstractProvider {
         BeanUtils.copyProperties(dto, user);
         sysUserService.updateById(user);
         return success();
+    }
+
+    @PostMapping("user/login")
+    public R<SysUser> userLogin(@RequestBody @Validated PostUserLoginDTO dto,
+                                HttpServletRequest request,
+                                HttpServletResponse response) {
+        SysUser user = sysUserService.getByAccountAndPassword(dto.getAccount(), dto.getPassword());
+        log.info("User post verification.code is [{}]", dto.getCode());
+        String requestedSessionId = request.getRequestedSessionId();
+        log.info("Request session id is [{}]", requestedSessionId);
+        Object attribute = request.getSession().getAttribute("user:" + user.getUserId());
+        if (attribute != null) {
+            return success(null);
+        }
+        request.getSession().setAttribute("user:" + user.getUserId(), user);
+        return success(user);
     }
 }

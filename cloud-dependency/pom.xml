@@ -28,6 +28,7 @@
         <!-- web -->
         <tomcat.embed.core.version>9.0.35</tomcat.embed.core.version>
         <jjwt.version>0.9.1</jjwt.version>
+        <redis-session.version>2.3.0.RELEASE</redis-session.version>
 
         <!-- tools -->
         <lombok.version>1.18.10</lombok.version>
@@ -113,6 +114,12 @@
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.session</groupId>
+                <artifactId>spring-session-data-redis</artifactId>
+                <version>${redis-session.version}</version>
             </dependency>
 
             <!-- tools -->
