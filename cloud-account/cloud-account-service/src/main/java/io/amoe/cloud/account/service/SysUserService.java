@@ -9,8 +9,10 @@ import io.amoe.cloud.exception.BizException;
 import io.amoe.cloud.tools.EncryptUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import static io.amoe.cloud.enums.BizResponseStatus.ACCOUNT_OR_PASSWORD_ERROR;
 import static io.amoe.cloud.enums.BizResponseStatus.USER_ACCOUNT_EXIST;
@@ -65,5 +67,16 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
             throw new BizException(ACCOUNT_OR_PASSWORD_ERROR);
         }
         return user;
+    }
+
+    @Transactional
+    public void delUser(Long id) {
+        if (null == id || id < 0) {
+            return;
+        }
+        SysUser userFromDB = this.getById(id);
+        Optional.ofNullable(userFromDB).ifPresent(user -> {
+            this.removeById(id);
+        });
     }
 }
