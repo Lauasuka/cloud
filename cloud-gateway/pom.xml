@@ -65,7 +65,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>io.amoe.cloud.gateway.WebCmsGatewayApplication</mainClass>
+                    <mainClass>io.amoe.cloud.gateway.GatewayApplication</mainClass>
                     <layout>ZIP</layout>
                     <includes>
                         <include>

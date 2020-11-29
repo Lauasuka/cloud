@@ -7,6 +7,7 @@ import io.amoe.cloud.account.dto.PostUserLoginDTO;
 import io.amoe.cloud.account.dto.PutUserDTO;
 import io.amoe.cloud.account.entity.SysUser;
 import io.amoe.cloud.account.service.ISysUserService;
+import io.amoe.cloud.annotation.WebLog;
 import io.amoe.cloud.base.AbstractProvider;
 import io.amoe.cloud.entity.PageData;
 import io.amoe.cloud.entity.R;
@@ -33,6 +34,7 @@ import java.util.Optional;
  * @date 2020/4/10 10:40
  */
 @Slf4j
+@WebLog("User")
 @RestController
 public class SysUserProvider extends AbstractProvider implements ISysUserProvider {
 
