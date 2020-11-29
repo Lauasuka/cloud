@@ -2,7 +2,7 @@ package io.amoe.cloud.account.provider;
 
 import io.amoe.cloud.account.dto.UploadFileDTO;
 import io.amoe.cloud.account.entity.SysFile;
-import io.amoe.cloud.account.service.SysFileService;
+import io.amoe.cloud.account.service.ISysFileService;
 import io.amoe.cloud.account.service.file.IFileOperatingStrategy;
 import io.amoe.cloud.base.AbstractProvider;
 import io.amoe.cloud.entity.R;
@@ -34,7 +34,7 @@ public class SysFileProvider extends AbstractProvider {
     private static final String TEMP_PATH = System.getProperty("java.io.tmpdir");
 
     @Autowired
-    private SysFileService sysFileService;
+    private ISysFileService sysFileService;
 
     @Autowired
     private IFileOperatingStrategy fileStrategy;

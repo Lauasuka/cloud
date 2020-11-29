@@ -1,10 +1,11 @@
-package io.amoe.cloud.account.service;
+package io.amoe.cloud.account.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.amoe.cloud.account.entity.SysUser;
 import io.amoe.cloud.account.mapper.SysUserMapper;
+import io.amoe.cloud.account.service.ISysUserService;
 import io.amoe.cloud.exception.BizException;
 import io.amoe.cloud.tools.EncryptUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,9 +24,9 @@ import static io.amoe.cloud.enums.BizResponseStatus.USER_ACCOUNT_NOT_EXIST;
  * @date 2020/4/9 16:43
  */
 @Service
-public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
+public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
-    public IPage<SysUser> getUsersPage(Long currentPage, Long pageSize) {
+    public IPage<SysUser> getUserPage(Long currentPage, Long pageSize) {
         Page<SysUser> page = new Page<>(currentPage, pageSize);
         return this.page(page);
     }
@@ -75,8 +76,6 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
             return;
         }
         SysUser userFromDB = this.getById(id);
-        Optional.ofNullable(userFromDB).ifPresent(user -> {
-            this.removeById(id);
-        });
+        Optional.ofNullable(userFromDB).ifPresent(user -> this.removeById(id));
     }
 }

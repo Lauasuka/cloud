@@ -5,7 +5,7 @@ import io.amoe.cloud.account.dto.PostUserDTO;
 import io.amoe.cloud.account.dto.PostUserLoginDTO;
 import io.amoe.cloud.account.dto.PutUserDTO;
 import io.amoe.cloud.account.entity.SysUser;
-import io.amoe.cloud.account.service.SysUserService;
+import io.amoe.cloud.account.service.ISysUserService;
 import io.amoe.cloud.base.AbstractProvider;
 import io.amoe.cloud.entity.PageData;
 import io.amoe.cloud.entity.R;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -37,11 +36,11 @@ import java.util.Optional;
 public class SysUserProvider extends AbstractProvider {
 
     @Resource
-    private SysUserService sysUserService;
+    private ISysUserService sysUserService;
 
     @GetMapping("users")
     public R<PageData<SysUser>> getUsers(Long currentPage, Long pageSize) {
-        IPage<SysUser> usersPage = sysUserService.getUsersPage(currentPage, pageSize);
+        IPage<SysUser> usersPage = sysUserService.getUserPage(currentPage, pageSize);
         return success(pageDataBuilder(usersPage));
     }
 

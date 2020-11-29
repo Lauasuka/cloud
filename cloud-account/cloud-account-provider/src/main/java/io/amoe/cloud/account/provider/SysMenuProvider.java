@@ -1,7 +1,7 @@
 package io.amoe.cloud.account.provider;
 
 import io.amoe.cloud.account.dto.PostMenuDTO;
-import io.amoe.cloud.account.service.SysMenuService;
+import io.amoe.cloud.account.service.ISysMenuService;
 import io.amoe.cloud.base.AbstractProvider;
 import io.amoe.cloud.entity.R;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 public class SysMenuProvider extends AbstractProvider {
 
     @Resource
-    private SysMenuService sysMenuService;
+    private ISysMenuService sysMenuService;
 
     @PostMapping("menu")
     public R<?> postSysMenu(@RequestBody PostMenuDTO dto) {
