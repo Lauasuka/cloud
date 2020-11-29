@@ -48,8 +48,8 @@ public class WebLogAspect {
     /**
      * 前置通知
      * 在方法之前织入代码
-     * @param joinPoint
-     * @throws Exception
+     * @param joinPoint param
+     * @throws Exception ex
      */
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) throws Exception {
@@ -89,8 +89,8 @@ public class WebLogAspect {
     /**
      * 环绕通知
      * 在方法被调用之前和之后织入代码
-     * @param joinPoint
-     * @return
+     * @param joinPoint point
+     * @return result
      */
     @Around("webLog()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -104,21 +104,25 @@ public class WebLogAspect {
     /**
      * 成功调用通知
      * 在方法被成功调用之后织入代码
-     * @param val
+     * @param val value
      */
     @AfterReturning(returning = "val", pointcut = "webLog()")
     public void doAfterReturning(Object val) {
-        // ignore
+        try {
+            log.info("接口结果    : {}", mapper.writeValueAsString(val));
+        } catch (JsonProcessingException e) {
+            log.error("WebLog AOP log result error, because {}", e.getMessage());
+        }
     }
 
-    /**
+    /**省略
      * 调用异常通知
      * 在方法被调用出现异常之后织入代码
-     * @param ex
+     * @param ex ex
      */
     @AfterThrowing(pointcut = "webLog()", throwing = "ex")
     public void doAfterThrowing(Throwable ex) {
-        // ignore
+        log.info("接口异常    : {}", ex.getMessage());
     }
 
     /**
@@ -127,7 +131,7 @@ public class WebLogAspect {
      */
     @After("webLog()")
     public void doAfter() {
-        log.info("==========================================  End  ==========================================");
+        log.info("===========================================  End  ===========================================");
     }
 
     /**
