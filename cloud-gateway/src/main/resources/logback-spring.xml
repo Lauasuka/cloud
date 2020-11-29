@@ -7,7 +7,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <!--日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL-->
     <property name="NAME" value="register"/>
-    <property name="LOG_PATH" value="logs/cloud-cms-gateway"/>
+    <property name="LOG_PATH" value="logs/cloud-gateway"/>
     <property name="MAX_HISTORY" value="30"/>
     <property name="MAX_FILE_SIZE" value="10MB"/>
     <property name="TOTAL_FILE_SIZE" value="100MB"/>

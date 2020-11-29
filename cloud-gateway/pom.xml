@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cloud-cms-gateway</artifactId>
-    <name>cloud-cms-gateway</name>
+    <artifactId>cloud-gateway</artifactId>
+    <name>cloud-gateway</name>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -59,7 +59,7 @@
     </dependencies>
 
     <build>
-        <finalName>cloud-cms-gateway</finalName>
+        <finalName>cloud-gateway</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

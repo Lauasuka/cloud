@@ -10,8 +10,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = {"io.amoe.cloud"})
-public class WebCmsGatewayApplication {
+public class WebGatewayApplication {
     public static void main(String[] args) {
-        SpringApplication.run(WebCmsGatewayApplication.class, args);
+        SpringApplication.run(WebGatewayApplication.class, args);
     }
 }

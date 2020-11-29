@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: cloud-cms-gateway
+    name: cloud-gateway
   redis:
     host: localhost
     port: 6379
