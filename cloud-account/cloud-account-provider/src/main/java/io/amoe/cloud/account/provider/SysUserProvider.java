@@ -1,6 +1,7 @@
 package io.amoe.cloud.account.provider;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.amoe.account.api.provider.ISysUserProvider;
 import io.amoe.cloud.account.dto.PostUserDTO;
 import io.amoe.cloud.account.dto.PostUserLoginDTO;
 import io.amoe.cloud.account.dto.PutUserDTO;
@@ -33,17 +34,19 @@ import java.util.Optional;
  */
 @Slf4j
 @RestController
-public class SysUserProvider extends AbstractProvider {
+public class SysUserProvider extends AbstractProvider implements ISysUserProvider {
 
     @Resource
     private ISysUserService sysUserService;
 
+    @Override
     @GetMapping("users")
     public R<PageData<SysUser>> getUsers(Long currentPage, Long pageSize) {
         IPage<SysUser> usersPage = sysUserService.getUserPage(currentPage, pageSize);
         return success(pageDataBuilder(usersPage));
     }
 
+    @Override
     @GetMapping("user/{id}")
     public R<SysUser> getUserById(@PathVariable Long id) {
         SysUser user = sysUserService.getById(id);
@@ -51,6 +54,7 @@ public class SysUserProvider extends AbstractProvider {
         return success(user);
     }
 
+    @Override
     @PostMapping("user")
     public R<Void> postUser(@RequestBody @Validated PostUserDTO dto) {
         SysUser user = new SysUser();
@@ -59,6 +63,7 @@ public class SysUserProvider extends AbstractProvider {
         return success();
     }
 
+    @Override
     @PutMapping("user")
     public R<Void> putUser(@RequestBody @Validated PutUserDTO dto) {
         SysUser user = new SysUser();
@@ -67,12 +72,14 @@ public class SysUserProvider extends AbstractProvider {
         return success();
     }
 
+    @Override
     @DeleteMapping("user")
     public R<Void> delUser(Long id) {
         sysUserService.delUser(id);
         return success();
     }
 
+    @Override
     @PostMapping("user/login")
     public R<SysUser> userLogin(@RequestBody @Validated PostUserLoginDTO dto,
                                 HttpServletRequest request,

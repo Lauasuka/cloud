@@ -24,13 +24,15 @@ import static io.amoe.cloud.enums.BizResponseStatus.USER_ACCOUNT_NOT_EXIST;
  * @date 2020/4/9 16:43
  */
 @Service
-public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
+public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
+    @Override
     public IPage<SysUser> getUserPage(Long currentPage, Long pageSize) {
         Page<SysUser> page = new Page<>(currentPage, pageSize);
         return this.page(page);
     }
 
+    @Override
     public SysUser addUser(SysUser user) {
         String account = user.getAccount();
         SysUser tempUser = this.getByAccount(account);
@@ -49,6 +51,7 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> implemen
         return super.getById(id);
     }
 
+    @Override
     public SysUser getByAccount(String account) {
         if (StringUtils.isBlank(account)) {
             return null;
@@ -56,6 +59,7 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> implemen
         return this.lambdaQuery().eq(SysUser::getAccount, account).one();
     }
 
+    @Override
     public SysUser getByAccountAndPassword(String account, String password) {
         SysUser user = this.getByAccount(account);
         if (user == null) {
@@ -70,12 +74,13 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> implemen
         return user;
     }
 
-    @Transactional
+    @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void delUser(Long id) {
         if (null == id || id < 0) {
             return;
         }
-        SysUser userFromDB = this.getById(id);
-        Optional.ofNullable(userFromDB).ifPresent(user -> this.removeById(id));
+        SysUser userFromDb = this.getById(id);
+        Optional.ofNullable(userFromDb).ifPresent(user -> this.removeById(id));
     }
 }

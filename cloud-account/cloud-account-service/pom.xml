@@ -20,6 +20,11 @@
         </dependency>
 
         <dependency>
+            <groupId>io.amoe</groupId>
+            <artifactId>cloud-account-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
         </dependency>
@@ -43,6 +48,7 @@
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
+            <optional>false</optional>
         </dependency>
     </dependencies>
 </project>

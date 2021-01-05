@@ -29,5 +29,10 @@
             <groupId>io.amoe</groupId>
             <artifactId>cloud-account-entity</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.amoe</groupId>
+            <artifactId>cloud-account-api</artifactId>
+        </dependency>
     </dependencies>
 </project>

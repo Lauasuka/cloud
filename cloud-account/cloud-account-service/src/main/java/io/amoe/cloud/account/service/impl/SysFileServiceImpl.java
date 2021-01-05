@@ -13,8 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2020/7/24 16:28
  */
 @Service
-public class SysFileService extends ServiceImpl<SysFileMapper, SysFile> implements ISysFileService {
-    @Transactional
+public class SysFileServiceImpl extends ServiceImpl<SysFileMapper, SysFile> implements ISysFileService {
+    @Override
+    @Transactional(rollbackFor = Throwable.class)
     public void saveIfHashAbsent(SysFile file) {
         SysFile sysFile = getByHash(file.getHash());
         if (null == sysFile) {
@@ -28,6 +29,7 @@ public class SysFileService extends ServiceImpl<SysFileMapper, SysFile> implemen
         }
     }
 
+    @Override
     public SysFile getByHash(String hash) {
         return lambdaQuery().eq(SysFile::getHash, hash).one();
     }

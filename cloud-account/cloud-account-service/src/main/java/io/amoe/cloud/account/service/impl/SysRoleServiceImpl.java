@@ -11,5 +11,5 @@ import org.springframework.stereotype.Service;
  * @date 2020/4/9 16:50
  */
 @Service
-public class SysRoleService extends ServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
+public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
 }

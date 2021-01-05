@@ -21,23 +21,13 @@
         <module>cloud-account-service</module>
         <module>cloud-account-provider</module>
         <module>cloud-account-feign</module>
+        <module>cloud-account-api</module>
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>io.amoe</groupId>
             <artifactId>cloud-common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -65,6 +55,12 @@
             <dependency>
                 <groupId>io.amoe</groupId>
                 <artifactId>cloud-account-service</artifactId>
+                <version>${cloud.account.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.amoe</groupId>
+                <artifactId>cloud-account-api</artifactId>
                 <version>${cloud.account.version}</version>
             </dependency>
         </dependencies>
