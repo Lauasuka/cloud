@@ -1,9 +1,12 @@
 package io.amoe.cloud.tools;
 
+import io.amoe.cloud.enums.BizResponseStatus;
+import io.amoe.cloud.exception.BizException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -14,9 +17,14 @@ import java.security.NoSuchAlgorithmException;
 public final class EncryptUtils {
     private static final String ALGORITHM_MD5 = "md5";
     private static final int DEFAULT_LEN = 12;
+    private static final int BIT_32 = 32;
+    private static final int BIT_64 = 64;
+
+    private EncryptUtils() {}
 
     /**
      * Get default length salt
+     *
      * @return salt
      */
     public static String getSalt() {
@@ -26,6 +34,7 @@ public final class EncryptUtils {
     /**
      * Get the salt of the specified length
      * if length <= 0,will get the default length
+     *
      * @param length salt length
      * @return salt
      */
@@ -38,8 +47,9 @@ public final class EncryptUtils {
 
     /**
      * Generate md5 password
+     *
      * @param rawPwd raw password
-     * @param salt salt
+     * @param salt   salt
      * @return encode password
      */
     public static String genMd5Pwd(String rawPwd, String salt) {
@@ -52,9 +62,10 @@ public final class EncryptUtils {
 
     /**
      * Match the raw password and encode password
-     * @param rawPwd
-     * @param salt
-     * @param encodePwd
+     *
+     * @param rawPwd raw password
+     * @param salt salt
+     * @param encodePwd encode pwd
      * @return match result
      */
     public static Boolean matchMd5Pwd(String rawPwd, String salt, String encodePwd) {
@@ -74,14 +85,14 @@ public final class EncryptUtils {
         }
         byte[] secretBytes;
         try {
-            secretBytes = MessageDigest.getInstance(ALGORITHM_MD5).digest(
-                    raw.getBytes());
+            secretBytes = MessageDigest.getInstance(ALGORITHM_MD5).digest(raw.getBytes(StandardCharsets.UTF_8));
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Not these algorithm");
+            throw new BizException(BizResponseStatus.ERROR);
         }
-        StringBuilder md5code = new StringBuilder(new BigInteger(1, secretBytes).toString(16));// 16进制数字
+        // 16进制数字
+        StringBuilder md5code = new StringBuilder(new BigInteger(1, secretBytes).toString(16));
         // 如果生成数字未满32位，需要前面补0
-        for (int i = 0; i < 32 - md5code.length(); i++) {
+        for (int i = 0; i < BIT_32 - md5code.length(); i++) {
             md5code.insert(0, "0");
         }
         return md5code.toString();

@@ -10,17 +10,17 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Optional;
 
 /**
  * @author Amoe
  * @date 2020/7/28 15:39
  */
 public final class FileUtils {
-
     @SneakyThrows
     public static String getFileType(InputStream inputStream) {
-        Optional.ofNullable(inputStream).orElseThrow(() -> new BizException(BizResponseStatus.PARAM_ERROR));
+        if (inputStream == null) {
+            throw new BizException(BizResponseStatus.PARAM_ERROR);
+        }
         byte[] bytes = new byte[28];
         try {
             int readBytes = inputStream.read(bytes, 0, 28);
@@ -39,22 +39,20 @@ public final class FileUtils {
             String magic = stringBuilder.toString();
             FileMagicType type = FileMagicType.getByMagic(magic);
             return type == null ? null : type.getFileType();
-        } catch (Exception e) {
-            // do nothing
         } finally {
             inputStream.close();
         }
-        throw new BizException(BizResponseStatus.PARAM_ERROR);
     }
 
     public static String getFileType(File file) {
-        Optional.ofNullable(file).orElseThrow(() -> new BizException(BizResponseStatus.PARAM_ERROR));
+        if (file == null) {
+            throw new BizException(BizResponseStatus.PARAM_ERROR);
+        }
         try {
             return getFileType(new FileInputStream(file));
         } catch (Exception e) {
-            // do nothing
+            throw new BizException(BizResponseStatus.PARAM_ERROR);
         }
-        throw new BizException(BizResponseStatus.PARAM_ERROR);
     }
 
     public static boolean isImage(String type) {

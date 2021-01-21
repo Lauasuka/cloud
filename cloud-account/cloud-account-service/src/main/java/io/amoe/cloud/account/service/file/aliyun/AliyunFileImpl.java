@@ -74,19 +74,13 @@ public class AliyunFileImpl implements IFileOperatingStrategy {
                 dto.setImageWidth(image.getWidth());
             }
 
-            try {
-                if (callback != null) {
-                    callback.doCallback(dto);
-                }
-            } catch (Exception e) {
-                log.error("File upload call back run with error,please check,cause [{}] [{}]", e.getClass().getName(), e.getMessage());
+            if (callback != null) {
+                callback.doCallback(dto);
             }
-
             return dto;
+        } catch (BizException e) {
+            throw e;
         } catch (Exception e) {
-            if (e instanceof BizException) {
-                throw (BizException)e;
-            }
             log.error("File upload error, cause [{}] [{}]", e.getClass().getName(), e.getMessage());
             throw new BizException(BizResponseStatus.ERROR);
         }
