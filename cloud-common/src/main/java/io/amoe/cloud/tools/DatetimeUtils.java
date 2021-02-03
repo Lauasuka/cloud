@@ -13,6 +13,8 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
  * @date 2020/8/25 17:53
  */
 public final class DatetimeUtils {
+    private DatetimeUtils() { }
+
     private static final DateTimeFormatter DEFAULT_DATE_PATTERN = ISO_LOCAL_DATE;
     private static final DateTimeFormatter DEFAULT_DATE_TIME_PATTERN = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -80,11 +82,11 @@ public final class DatetimeUtils {
         return LocalDateTime.parse(date, DateTimeFormatter.ofPattern(pattern));
     }
 
-    public static String datetimeToStr(LocalDate datetime) {
+    public static String datetimeToStr(LocalDateTime datetime) {
         return datetimeToStr(datetime, null);
     }
 
-    public static String datetimeToStr(LocalDate datetime, String pattern) {
+    public static String datetimeToStr(LocalDateTime datetime, String pattern) {
         if (StringUtils.isBlank(pattern)) {
             return datetime.format(DEFAULT_DATE_TIME_PATTERN);
         }
