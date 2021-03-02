@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <groupId>io.amoe</groupId>
-    <artifactId>cloud-dependency</artifactId>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>io.amoe</groupId>
+        <artifactId>cloud-dependency</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>cloud-file-starter</artifactId>
+    <modelVersion>4.0.0</modelVersion>
     <version>1.0.0-SNAPSHOT</version>
-  </parent>
 
-  <artifactId>cloud-file-starter</artifactId>
-  <modelVersion>4.0.0</modelVersion>
-  <version>1.0.0-SNAPSHOT</version>
+    <name>cloud-file-starter</name>
+    <packaging>jar</packaging>
 
-  <name>cloud-file-starter</name>
-  <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>io.amoe</groupId>
+            <artifactId>cloud-common</artifactId>
+        </dependency>
 
-  <dependencies>
-    <dependency>
-      <groupId>io.amoe</groupId>
-      <artifactId>cloud-common</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-autoconfigure</artifactId>
-    </dependency>
-  </dependencies>
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <optional>false</optional>
+        </dependency>
+    </dependencies>
 </project>
