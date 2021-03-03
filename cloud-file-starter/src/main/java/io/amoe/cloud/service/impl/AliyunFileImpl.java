@@ -1,15 +1,19 @@
 package io.amoe.cloud.service.impl;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.model.PutObjectResult;
 import io.amoe.cloud.entity.UploadFile;
 import io.amoe.cloud.enums.BizResponseStatus;
+import io.amoe.cloud.enums.FileUploadType;
 import io.amoe.cloud.exception.BizException;
 import io.amoe.cloud.properties.FileUploadProperties;
 import io.amoe.cloud.service.IFileOperatingStrategy;
-import io.amoe.cloud.service.callback.IDeleteFileCallback;
-import io.amoe.cloud.service.callback.IDownloadFileCallback;
 import io.amoe.cloud.service.callback.IUploadFileCallback;
 import io.amoe.cloud.tools.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -24,6 +28,8 @@ import java.io.FileInputStream;
  */
 @Component
 public class AliyunFileImpl implements IFileOperatingStrategy {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AliyunFileImpl.class);
 
     @Resource
     private FileUploadProperties.Aliyun properties;
@@ -43,6 +49,11 @@ public class AliyunFileImpl implements IFileOperatingStrategy {
                 properties.getObject() +
                 WEB_SEPARATOR +
                 fileName;
+    }
+
+    @Override
+    public FileUploadType getFileUploadType() {
+        return FileUploadType.ALIYUN_OSS;
     }
 
     @Override
@@ -81,7 +92,7 @@ public class AliyunFileImpl implements IFileOperatingStrategy {
         } catch (BizException e) {
             throw e;
         } catch (Exception e) {
-            log.error("File upload error, cause [{}] [{}]", e.getClass().getName(), e.getMessage());
+            LOGGER.error("File upload error, cause [{}] [{}]", e.getClass().getName(), e.getMessage());
             throw new BizException(BizResponseStatus.ERROR);
         }
     }
@@ -90,20 +101,5 @@ public class AliyunFileImpl implements IFileOperatingStrategy {
     public UploadFile doUploadFileWithFolder(File file, String fileName, String folder, IUploadFileCallback callback) {
         fileName = folder + WEB_SEPARATOR + fileName;
         return this.doUploadFile(file, fileName, callback);
-    }
-
-    @Override
-    public void doDownloadFile(IDownloadFileCallback callback) {
-
-    }
-
-    @Override
-    public void doDeleteFile(IDeleteFileCallback callback) {
-
-    }
-
-    @Override
-    public void listFiles() {
-
     }
 }
