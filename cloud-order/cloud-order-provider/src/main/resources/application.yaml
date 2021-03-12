@@ -1,9 +1,9 @@
 server:
-  port: 10200
+  port: 10300
 
 spring:
   application:
-    name: cloud-account
+    name: cloud-order
   servlet:
     multipart:
       max-file-size: 10MB
@@ -13,14 +13,14 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     #新的驱动需要在URL中添加时区设置，否则会报错
-    url: jdbc:mysql://localhost:3306/cloud-account?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/cloud-order?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
     hikari:
       minimum-idle: 5
       idle-timeout: 180000
       max-lifetime: 1800000
       maximum-pool-size: 10
       auto-commit: true
-      pool-name: cloud-account-pool
+      pool-name: cloud-order-pool
       connection-test-query: SELECT 1
       connection-timeout: 30000
   messages:
@@ -42,10 +42,6 @@ spring:
         max-idle: 8
         min-idle: 0
 
-feign:
-  hystrix:
-    enabled: true
-
 eureka:
   client:
     service-url:
@@ -59,4 +55,4 @@ mybatis-plus:
     map-underscore-to-camel-case: true
   global-config:
     banner: false
-  mapper-locations: io.amoe.account.**.xml
+  mapper-locations: io.amoe.order.**.xml

@@ -26,16 +26,17 @@ public class LoggerFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        ServerHttpRequest request = exchange.getRequest();
-        logger.info("========================================== Start ==========================================");
-        logger.info("Request.URI       : {}", request.getURI().toString());
-        logger.info("Request.Path      : {}", request.getPath());
-        logger.info("Request.Method    : {}", request.getMethod());
-        logger.info("Request.Params    : {}", request.getQueryParams());
-        logger.info("Request.IP        : {}", request.getRemoteAddress());
-        logger.info("Request.UA        : {}", request.getHeaders().get(UA));
-        logger.info("Request.Cookies   : {}", request.getCookies());
-        logger.info("========================================== End ==========================================");
-        return chain.filter(exchange);
+        return chain.filter(exchange).doFinally(signalType -> {
+            ServerHttpRequest request = exchange.getRequest();
+            logger.info("========================================== Start ==========================================");
+            logger.info("Request.URI       : {}", request.getURI().toString());
+            logger.info("Request.Path      : {}", request.getPath());
+            logger.info("Request.Method    : {}", request.getMethod());
+            logger.info("Request.Params    : {}", request.getQueryParams());
+            logger.info("Request.IP        : {}", request.getRemoteAddress());
+            logger.info("Request.UA        : {}", request.getHeaders().get(UA));
+            logger.info("Request.Cookies   : {}", request.getCookies());
+            logger.info("========================================== End ==========================================");
+        });
     }
 }

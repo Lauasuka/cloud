@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>cloud-account</artifactId>
+        <artifactId>cloud-product</artifactId>
         <groupId>io.amoe</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cloud-account-provider</artifactId>
-    <name>cloud-account-provider</name>
+    <artifactId>cloud-product-provider</artifactId>
+    <name>cloud-product-provider</name>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>io.amoe</groupId>
-            <artifactId>cloud-account-service</artifactId>
+            <artifactId>cloud-product-service</artifactId>
         </dependency>
 
         <dependency>
@@ -58,16 +56,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -75,14 +63,11 @@
     </dependencies>
 
     <build>
-        <finalName>cloud-account-provider</finalName>
+        <finalName>cloud-product-provider</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>io.amoe.cloud.account.AccountApplication</mainClass>
-                </configuration>
             </plugin>
         </plugins>
     </build>

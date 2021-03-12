@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.amoe</groupId>
+        <artifactId>cloud-dependency</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>cloud-order</artifactId>
+    <packaging>pom</packaging>
+    <name>cloud-order</name>
+
+    <modules>
+        <module>cloud-order-entity</module>
+        <module>cloud-order-dao</module>
+        <module>cloud-order-service</module>
+        <module>cloud-order-provider</module>
+        <module>cloud-order-feign</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.amoe</groupId>
+            <artifactId>cloud-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.amoe</groupId>
+                <artifactId>cloud-order-entity</artifactId>
+                <version>${cloud.order.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.amoe</groupId>
+                <artifactId>cloud-order-dao</artifactId>
+                <version>${cloud.order.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.amoe</groupId>
+                <artifactId>cloud-order-service</artifactId>
+                <version>${cloud.order.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <!--
+               maven统一模块版本号管理插件，使用方式：
+               子模块不定义version属性，父模块定义所依赖的子模块的版本号（即父模块的版本号就是子模块的版本号）
+               通过点击IDEA右侧功能栏上的maven功能区，选择父模块中Plugins里面的versions插件，点击version:set命令
+               控制台会打印日志并提示输入新版本号，输入执行之后再去执行打包。
+             -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

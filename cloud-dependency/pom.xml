@@ -16,6 +16,7 @@
 
         <cloud.common.version>1.0.0-SNAPSHOT</cloud.common.version>
         <cloud.account.version>1.0.0-SNAPSHOT</cloud.account.version>
+        <cloud.order.version>1.0.0-SNAPSHOT</cloud.order.version>
 
         <!-- spring cloud dependencies -->
         <spring.dependencies.version>2.3.5.RELEASE</spring.dependencies.version>
