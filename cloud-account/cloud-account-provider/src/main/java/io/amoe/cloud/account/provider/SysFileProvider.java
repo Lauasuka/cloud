@@ -1,14 +1,14 @@
 package io.amoe.cloud.account.provider;
 
-import io.amoe.cloud.account.dto.UploadFileDTO;
 import io.amoe.cloud.account.entity.SysFile;
 import io.amoe.cloud.account.service.ISysFileService;
-import io.amoe.cloud.account.service.file.IFileOperatingStrategy;
 import io.amoe.cloud.base.AbstractProvider;
 import io.amoe.cloud.entity.R;
 import io.amoe.cloud.enums.BizResponseStatus;
 import io.amoe.cloud.enums.StatusType;
 import io.amoe.cloud.exception.BizException;
+import io.amoe.cloud.file.upload.autoconfigure.entity.UploadFile;
+import io.amoe.cloud.file.upload.autoconfigure.service.FileOperatingFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +37,10 @@ public class SysFileProvider extends AbstractProvider {
     private ISysFileService sysFileService;
 
     @Autowired
-    private IFileOperatingStrategy fileStrategy;
+    private FileOperatingFactory fileOperatingFactory;
 
     @PostMapping(value = "upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public R<UploadFileDTO> fileUpload(@RequestPart("file") MultipartFile file) throws IOException {
+    public R<UploadFile> fileUpload(@RequestPart("file") MultipartFile file) throws IOException {
         if (file == null) {
             throw new BizException(BizResponseStatus.PARAM_ERROR);
         }
@@ -50,7 +50,7 @@ public class SysFileProvider extends AbstractProvider {
         String tempFilePath = TEMP_PATH + originalFilename;
         File tempFile = new File(tempFilePath);
         file.transferTo(tempFile);
-        UploadFileDTO fileEntry = fileStrategy.doUploadFile(tempFile, fileName, (dto) -> {
+        UploadFile fileEntry = fileOperatingFactory.doUploadFile(tempFile, fileName, (dto) -> {
             SysFile sysFile = new SysFile();
             sysFile.setName(dto.getName());
             sysFile.setSize(dto.getFileSize());

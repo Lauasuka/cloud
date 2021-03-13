@@ -11,6 +11,7 @@ import io.amoe.cloud.tools.SpringContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.Collection;
@@ -24,6 +25,7 @@ import java.util.Map;
  * @date 2021/3/2
  */
 @Slf4j
+@Component
 @DependsOn("SpringContextUtils")
 public class FileOperatingFactory implements InitializingBean {
     private static final String DEFAULT_SERVER_PATH = System.getProperty("java.io.tmpdir");

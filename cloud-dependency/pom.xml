@@ -15,6 +15,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <cloud.common.version>1.0.0-SNAPSHOT</cloud.common.version>
+        <cloud.file.upload.version>1.0.0-SNAPSHOT</cloud.file.upload.version>
         <cloud.account.version>1.0.0-SNAPSHOT</cloud.account.version>
         <cloud.order.version>1.0.0-SNAPSHOT</cloud.order.version>
 
@@ -61,6 +62,12 @@
                 <groupId>io.amoe</groupId>
                 <artifactId>cloud-common</artifactId>
                 <version>${cloud.common.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.amoe</groupId>
+                <artifactId>cloud-file-starter</artifactId>
+                <version>${cloud.file.upload.version}</version>
             </dependency>
 
             <!-- spring cloud dependencies -->
