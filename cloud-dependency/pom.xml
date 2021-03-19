@@ -27,7 +27,7 @@
         <spring.session.version>Corn-SR2</spring.session.version>
 
         <!-- web -->
-        <tomcat.embed.core.version>9.0.35</tomcat.embed.core.version>
+        <tomcat.embed.core.version>9.0.41</tomcat.embed.core.version>
         <jjwt.version>0.9.1</jjwt.version>
         <redis-session.version>2.3.0.RELEASE</redis-session.version>
 
