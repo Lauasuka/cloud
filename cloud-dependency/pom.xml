@@ -35,7 +35,7 @@
         <lombok.version>1.18.10</lombok.version>
         <hibernate.validator.version>6.0.18.Final</hibernate.validator.version>
         <commons-lang3.version>3.10</commons-lang3.version>
-        <guava.version>28.2-android</guava.version>
+        <guava.version>29.0-android</guava.version>
         <commons-pool2.version>2.7.0</commons-pool2.version>
 
         <!--  database  -->
