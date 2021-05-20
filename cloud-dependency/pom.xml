@@ -118,18 +118,6 @@
                 <version>${tomcat.embed.core.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jjwt.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.session</groupId>
-                <artifactId>spring-session-data-redis</artifactId>
-                <version>${redis-session.version}</version>
-            </dependency>
-
             <!-- tools -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
