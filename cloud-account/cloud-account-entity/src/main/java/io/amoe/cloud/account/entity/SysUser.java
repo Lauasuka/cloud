@@ -44,12 +44,6 @@ public class SysUser extends BaseEntity {
     private String password;
 
     /**
-     * md5密码盐
-     */
-    @TableField("salt")
-    private String salt;
-
-    /**
      * 名字
      */
     @TableField("name")

@@ -9,6 +9,7 @@ import io.amoe.cloud.account.service.ISysUserService;
 import io.amoe.cloud.exception.BizException;
 import io.amoe.cloud.tools.EncryptUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,9 +40,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (tempUser != null) {
             throw new BizException(USER_ACCOUNT_EXIST);
         }
-        String salt = EncryptUtils.getSalt();
-        user.setSalt(salt);
-        user.setPassword(EncryptUtils.genMd5Pwd(user.getPassword(), salt));
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(user.getPassword()));
         this.save(user);
         return user;
     }
@@ -65,10 +65,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (user == null) {
             throw new BizException(USER_ACCOUNT_NOT_EXIST);
         }
-        String slat = user.getSalt();
-        String trulyPwd = user.getPassword();
-        String md5Pwd = EncryptUtils.genMd5Pwd(password, slat);
-        if (!trulyPwd.equals(md5Pwd)) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!encoder.matches(password, user.getPassword())) {
             throw new BizException(ACCOUNT_OR_PASSWORD_ERROR);
         }
         return user;
