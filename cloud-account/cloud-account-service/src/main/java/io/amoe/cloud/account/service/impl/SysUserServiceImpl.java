@@ -7,7 +7,6 @@ import io.amoe.cloud.account.entity.SysUser;
 import io.amoe.cloud.account.mapper.SysUserMapper;
 import io.amoe.cloud.account.service.ISysUserService;
 import io.amoe.cloud.exception.BizException;
-import io.amoe.cloud.tools.EncryptUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
