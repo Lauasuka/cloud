@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
@@ -57,6 +58,22 @@ public final class DatetimeUtils {
             return getTomorrowOfDate(date);
         }
         return parseDate(date, pattern).plusDays(1);
+    }
+
+    public static LocalDate lastDateOfMonth(LocalDate date) {
+        return date.with(TemporalAdjusters.lastDayOfMonth());
+    }
+
+    public static LocalDate lastDateOfMonth(String date, String pattern) {
+        return parseDate(date, pattern).with(TemporalAdjusters.lastDayOfMonth());
+    }
+
+    public static LocalDate firstDateOfMonth(LocalDate date) {
+        return date.with(TemporalAdjusters.firstDayOfMonth());
+    }
+
+    public static LocalDate firstDateOfMonth(String date, String pattern) {
+        return parseDate(date, pattern).with(TemporalAdjusters.firstDayOfMonth());
     }
 
     public static LocalDateTime getDatetimeNow() {
