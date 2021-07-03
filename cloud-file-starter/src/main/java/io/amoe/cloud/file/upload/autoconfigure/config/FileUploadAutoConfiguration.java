@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 /**
  * FileUploadConfiguration
  *
- * @author 519001
+ * @author Amoe
  * @date 2021/3/2
  */
 @Configuration

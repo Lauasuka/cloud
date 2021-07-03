@@ -15,7 +15,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <cloud.common.version>1.0.0-SNAPSHOT</cloud.common.version>
-        <cloud.file.upload.version>1.0.0-SNAPSHOT</cloud.file.upload.version>
+        <cloud.file.upload.starter.version>1.0.0-SNAPSHOT</cloud.file.upload.starter.version>
         <cloud.account.version>1.0.0-SNAPSHOT</cloud.account.version>
         <cloud.order.version>1.0.0-SNAPSHOT</cloud.order.version>
 
@@ -67,7 +67,7 @@
             <dependency>
                 <groupId>io.amoe</groupId>
                 <artifactId>cloud-file-starter</artifactId>
-                <version>${cloud.file.upload.version}</version>
+                <version>${cloud.file.upload.starter.version}</version>
             </dependency>
 
             <!-- spring cloud dependencies -->
@@ -116,6 +116,18 @@
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
                 <version>${tomcat.embed.core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.session</groupId>
+                <artifactId>spring-session-data-redis</artifactId>
+                <version>${redis-session.version}</version>
             </dependency>
 
             <!-- tools -->

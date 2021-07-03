@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * FileComponentConfig
  *
- * @author 519001
+ * @author Amoe
  * @date 2021/2/19
  */
 @Data

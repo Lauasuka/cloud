@@ -3,7 +3,7 @@ package io.amoe.cloud.file.upload.autoconfigure.enums;
 /**
  * FileUploadType
  *
- * @author 519001
+ * @author Amoe
  * @date 2021/2/19
  */
 public enum FileUploadType {

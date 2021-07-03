@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * ThreadPoolConfig
  *
- * @author 519001
+ * @author Amoe
  * @date 2021/1/20
  */
 @Configuration
