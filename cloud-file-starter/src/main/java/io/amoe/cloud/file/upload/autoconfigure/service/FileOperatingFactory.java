@@ -15,8 +15,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * FileOperatingFactory
@@ -28,12 +30,11 @@ import java.util.Map;
 @Component
 @DependsOn("SpringContextUtils")
 public class FileOperatingFactory implements InitializingBean {
-    private static final String DEFAULT_SERVER_PATH = System.getProperty("java.io.tmpdir");
-    private static final String DEFAULT_DOMAIN = "localhost";
+
 
     private final FileUploadProperties properties;
 
-    private Map<String, IFileOperatingStrategy> STRATEGIES = new HashMap<>(8);
+    private Map<String, IFileOperatingStrategy> strategies = new ConcurrentHashMap<>(8);
 
     public FileOperatingFactory(FileUploadProperties properties) {
         this.properties = properties;
@@ -44,9 +45,10 @@ public class FileOperatingFactory implements InitializingBean {
     }
 
     public UploadFile doUploadFile(File file, String fileName, IUploadFileCallback callback) {
-        Collection<IFileOperatingStrategy> values = STRATEGIES.values();
+        Collection<IFileOperatingStrategy> values = strategies.values();
         for (IFileOperatingStrategy strategy : values) {
-            if (strategy.getFileUploadType().equals(properties.getUploadType())) {
+            AbstractFileOperation operation = (AbstractFileOperation) strategy;
+            if (operation.getFileUploadType().equals(properties.getUploadType())) {
                 return strategy.doUploadFile(file, fileName, callback);
             }
         }
@@ -55,14 +57,20 @@ public class FileOperatingFactory implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        STRATEGIES = SpringContextUtils.getBeansByType(IFileOperatingStrategy.class);
-        final FileUploadType uploadType = properties.getUploadType();
-        if (uploadType == null) {
-            properties.setUploadType(FileUploadType.SERVER);
-            if (null == properties.getServer()) {
-                final FileUploadProperties.Server server = new FileUploadProperties.Server(DEFAULT_SERVER_PATH, DEFAULT_DOMAIN);
-                properties.setServer(server);
-            }
+        strategies = SpringContextUtils.getBeansByType(IFileOperatingStrategy.class);
+        final FileUploadType type = properties.getUploadType();
+        if (type == null) {
+            throw new RuntimeException("File upload type is not config, Please check your config file");
         }
+        if (strategies == null || strategies.isEmpty()) {
+            throw new RuntimeException("File upload strategy was not init");
+        }
+        final Collection<IFileOperatingStrategy> values = strategies.values();
+        values.forEach(item -> {
+            AbstractFileOperation operation = (AbstractFileOperation) item;
+            if (type.equals(operation.getFileUploadType())) {
+                operation.setConfig(properties);
+            }
+        });
     }
 }

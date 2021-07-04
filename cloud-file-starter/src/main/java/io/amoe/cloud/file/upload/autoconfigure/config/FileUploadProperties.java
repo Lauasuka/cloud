@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.io.Serializable;
+
 /**
  * FileComponentConfig
  *
@@ -19,9 +21,11 @@ public class FileUploadProperties {
     private FileUploadProperties.Server server;
     private FileUploadProperties.Aliyun aliyun;
 
+    public interface FileUploadPropertiesConfig extends Serializable {}
+
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Server {
+    public static class Server implements FileUploadPropertiesConfig {
         private String storePath;
         private String prefixDomain;
 
@@ -42,7 +46,7 @@ public class FileUploadProperties {
         }
     }
 
-    public static class Aliyun {
+    public static class Aliyun implements FileUploadPropertiesConfig {
         private boolean intranetEnabled;
         private String endpointInternet;
         private String endpointIntranet;

@@ -2,7 +2,6 @@ package io.amoe.cloud.file.upload.autoconfigure.service;
 
 
 import io.amoe.cloud.file.upload.autoconfigure.entity.UploadFile;
-import io.amoe.cloud.file.upload.autoconfigure.enums.FileUploadType;
 import io.amoe.cloud.file.upload.autoconfigure.service.callback.IUploadFileCallback;
 
 import java.io.File;
@@ -16,8 +15,6 @@ public interface IFileOperatingStrategy {
     String HTTP = "http://";
     String WEB_SEPARATOR = "/";
     String WEB_DOT = ".";
-
-    FileUploadType getFileUploadType();
 
     UploadFile doUploadFile(File file, String fileName, IUploadFileCallback callback);
 
