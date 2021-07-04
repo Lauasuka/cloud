@@ -28,15 +28,15 @@
         <spring.session.version>Corn-SR2</spring.session.version>
 
         <!-- web -->
-        <tomcat.embed.core.version>9.0.35</tomcat.embed.core.version>
+        <tomcat.embed.core.version>9.0.43</tomcat.embed.core.version>
         <jjwt.version>0.9.1</jjwt.version>
         <redis-session.version>2.3.0.RELEASE</redis-session.version>
 
         <!-- tools -->
         <lombok.version>1.18.10</lombok.version>
-        <hibernate.validator.version>6.0.18.Final</hibernate.validator.version>
+        <hibernate.validator.version>6.0.20.Final</hibernate.validator.version>
         <commons-lang3.version>3.10</commons-lang3.version>
-        <guava.version>28.2-android</guava.version>
+        <guava.version>30.1.1-jre</guava.version>
         <commons-pool2.version>2.7.0</commons-pool2.version>
 
         <!--  database  -->
