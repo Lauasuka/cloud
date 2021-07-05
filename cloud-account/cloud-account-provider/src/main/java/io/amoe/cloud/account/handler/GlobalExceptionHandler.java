@@ -48,7 +48,8 @@ public class GlobalExceptionHandler extends AbstractProvider {
                 ex.getClass().getSimpleName(),
                 StringUtils.isNotBlank(msg) ? msg : ex.getMessage(),
                 error.map(StackTraceElement::getClassName).orElse("Unknown"),
-                error.map(StackTraceElement::getLineNumber).orElse(-1)
+                error.map(StackTraceElement::getLineNumber).orElse(-1),
+                ex
         );
     }
 

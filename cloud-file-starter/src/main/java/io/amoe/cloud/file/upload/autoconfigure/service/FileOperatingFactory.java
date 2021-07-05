@@ -14,6 +14,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,11 +41,15 @@ public class FileOperatingFactory implements InitializingBean {
         this.properties = properties;
     }
 
-    public UploadFile doUploadFile(File file, String fileName) {
+    public UploadFile doUploadFile(File file) throws IOException {
+        return doUploadFile(file, null, null);
+    }
+
+    public UploadFile doUploadFile(File file, String fileName) throws IOException {
         return doUploadFile(file, fileName, null);
     }
 
-    public UploadFile doUploadFile(File file, String fileName, IUploadFileCallback callback) {
+    public UploadFile doUploadFile(File file, String fileName, IUploadFileCallback callback) throws IOException {
         Collection<IFileOperatingStrategy> values = strategies.values();
         for (IFileOperatingStrategy strategy : values) {
             AbstractFileOperation operation = (AbstractFileOperation) strategy;

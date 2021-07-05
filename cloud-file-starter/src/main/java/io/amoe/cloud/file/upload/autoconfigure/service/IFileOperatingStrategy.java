@@ -5,6 +5,7 @@ import io.amoe.cloud.file.upload.autoconfigure.entity.UploadFile;
 import io.amoe.cloud.file.upload.autoconfigure.service.callback.IUploadFileCallback;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Amoe
@@ -16,7 +17,9 @@ public interface IFileOperatingStrategy {
     String WEB_SEPARATOR = "/";
     String WEB_DOT = ".";
 
-    UploadFile doUploadFile(File file, String fileName, IUploadFileCallback callback);
+    UploadFile doUploadFile(File file, IUploadFileCallback callback) throws IOException;
+
+    UploadFile doUploadFile(File file, String fileName, IUploadFileCallback callback) throws IOException;
 
     UploadFile doUploadFileWithFolder(File file, String fileName, String folder, IUploadFileCallback callback);
 }

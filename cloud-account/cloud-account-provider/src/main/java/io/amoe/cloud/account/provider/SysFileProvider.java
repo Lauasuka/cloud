@@ -50,19 +50,7 @@ public class SysFileProvider extends AbstractProvider {
         String tempFilePath = TEMP_PATH + originalFilename;
         File tempFile = new File(tempFilePath);
         file.transferTo(tempFile);
-        UploadFile fileEntry = fileOperatingFactory.doUploadFile(tempFile, fileName, (dto) -> {
-            SysFile sysFile = new SysFile();
-            sysFile.setName(dto.getName());
-            sysFile.setSize(dto.getFileSize());
-            sysFile.setImageWidth(dto.getImageWidth());
-            sysFile.setImageHeight(dto.getImageHeight());
-            sysFile.setType(dto.getType());
-            sysFile.setHash(dto.getFileHash());
-            sysFile.setInternetUrl(dto.getInternetUrl());
-            sysFile.setIntranetUrl(dto.getIntranetUrl());
-            sysFile.setStatus(StatusType.ENABLE.name());
-            sysFileService.saveIfHashAbsent(sysFile);
-        });
+        UploadFile fileEntry = fileOperatingFactory.doUploadFile(tempFile);
         return success(fileEntry);
     }
 }
