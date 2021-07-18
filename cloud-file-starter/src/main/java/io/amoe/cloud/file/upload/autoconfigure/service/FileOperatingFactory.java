@@ -57,6 +57,25 @@ public class FileOperatingFactory implements InitializingBean {
         throw new FileUploadException();
     }
 
+    public UploadFile doUploadFileWithFolder(File file, String folder) throws IOException {
+        return doUploadFileWithFolder(file, null, folder, null);
+    }
+
+    public UploadFile doUploadFileWithFolder(File file, String folder, IUploadFileCallback callback) throws IOException {
+        return doUploadFileWithFolder(file, null, folder, callback);
+    }
+
+    public UploadFile doUploadFileWithFolder(File file, String fileName, String folder, IUploadFileCallback callback) throws IOException {
+        Collection<IFileOperatingStrategy> values = strategies.values();
+        for (IFileOperatingStrategy strategy : values) {
+            AbstractFileOperation operation = (AbstractFileOperation) strategy;
+            if (operation.getFileUploadType().equals(properties.getUploadType())) {
+                return strategy.doUploadFileWithFolder(file, fileName, folder, callback);
+            }
+        }
+        throw new FileUploadException();
+    }
+
     @Override
     public void afterPropertiesSet() {
         strategies = SpringContextUtils.getBeansByType(IFileOperatingStrategy.class);

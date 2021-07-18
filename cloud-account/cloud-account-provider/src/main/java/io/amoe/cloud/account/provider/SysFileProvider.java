@@ -8,7 +8,6 @@ import io.amoe.cloud.exception.BizException;
 import io.amoe.cloud.file.upload.autoconfigure.entity.UploadFile;
 import io.amoe.cloud.file.upload.autoconfigure.service.FileOperatingFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +46,7 @@ public class SysFileProvider extends AbstractProvider {
         String tempFilePath = TEMP_PATH + originalFilename;
         File tempFile = new File(tempFilePath);
         file.transferTo(tempFile);
-        UploadFile fileEntry = fileOperatingFactory.doUploadFile(tempFile);
+        UploadFile fileEntry = fileOperatingFactory.doUploadFileWithFolder(tempFile, "temp");
         return success(fileEntry);
     }
 }

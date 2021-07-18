@@ -21,5 +21,5 @@ public interface IFileOperatingStrategy {
 
     UploadFile doUploadFile(File file, String fileName, IUploadFileCallback callback) throws IOException;
 
-    UploadFile doUploadFileWithFolder(File file, String fileName, String folder, IUploadFileCallback callback);
+    UploadFile doUploadFileWithFolder(File file, String fileName, String folder, IUploadFileCallback callback) throws IOException;
 }

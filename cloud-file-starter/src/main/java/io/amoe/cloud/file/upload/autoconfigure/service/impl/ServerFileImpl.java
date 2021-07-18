@@ -20,6 +20,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * ServerFileImpl
@@ -72,8 +74,14 @@ public class ServerFileImpl extends AbstractFileOperation implements IFileOperat
 
     @Override
     public UploadFile doUploadFile(File file, String fileName, IUploadFileCallback callback) throws IOException {
+        return doUploadFileWithFolder(file, fileName, null, callback);
+    }
+
+    @Override
+    public UploadFile doUploadFileWithFolder(File file, String fileName, String folder, IUploadFileCallback callback) throws IOException {
         Assert.notNull(file, "Upload file should not be null");
 
+        // init filename
         final String fileHash = DigestUtils.md5DigestAsHex(new FileInputStream(file));
         final String fileType = FileUtils.getFileType(file);
         if (StringUtils.isBlank(fileName)) {
@@ -82,13 +90,22 @@ public class ServerFileImpl extends AbstractFileOperation implements IFileOperat
         if (!fileName.contains(SymbolConstants.DOT)) {
             fileName = fileName.concat(SymbolConstants.DOT).concat(fileType);
         }
-        String newFilePath = config.getStorePath().concat(fileName);
-        log.info("File new store path is [{}]", newFilePath);
-        final int fileSize = FileCopyUtils.copy(file, new File(newFilePath));
 
+        // check file store dir
+        String fileStorePath = StringUtils.isBlank(folder) ? config.getStorePath() : config.getStorePath().concat(File.separator).concat(folder);
+        if (!Files.exists(Paths.get(fileStorePath))) {
+            Files.createDirectories(Paths.get(fileStorePath));
+        }
+
+        String newFilePath = fileStorePath.concat(File.separator).concat(fileName);
+        log.info("File new store path is [{}]", newFilePath);
+        final File newFile = new File(newFilePath);
+        final int fileSize = FileCopyUtils.copy(file, newFile);
+
+        String suffix = StringUtils.isBlank(folder) ? fileName : folder.concat(SymbolConstants.SLASH).concat(fileName);
         UploadFile dto = new UploadFile();
-        dto.setIntranetUrl(config.getPrefixDomain().concat(SymbolConstants.SLASH).concat(fileName));
-        dto.setInternetUrl(config.getPrefixDomain().concat(SymbolConstants.SLASH).concat(fileName));
+        dto.setIntranetUrl(config.getPrefixDomain().concat(SymbolConstants.SLASH).concat(suffix));
+        dto.setInternetUrl(config.getPrefixDomain().concat(SymbolConstants.SLASH).concat(suffix));
         dto.setFileHash(fileHash);
         dto.setFileSize((long) fileSize);
         dto.setName(fileName);
@@ -107,10 +124,5 @@ public class ServerFileImpl extends AbstractFileOperation implements IFileOperat
             log.warn("File upload callback run with error,please check,cause [{}] [{}]", e.getClass().getName(), e.getMessage(), e);
         }
         return dto;
-    }
-
-    @Override
-    public UploadFile doUploadFileWithFolder(File file, String fileName, String folder, IUploadFileCallback callback) {
-        return null;
     }
 }
