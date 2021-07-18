@@ -2,12 +2,15 @@ package io.amoe.cloud.account.provider;
 
 import io.amoe.cloud.account.service.ISysFileService;
 import io.amoe.cloud.base.AbstractProvider;
+import io.amoe.cloud.constant.SymbolConstants;
 import io.amoe.cloud.entity.R;
 import io.amoe.cloud.enums.BizResponseStatus;
 import io.amoe.cloud.exception.BizException;
 import io.amoe.cloud.file.upload.autoconfigure.entity.UploadFile;
 import io.amoe.cloud.file.upload.autoconfigure.service.FileOperatingFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,8 +48,12 @@ public class SysFileProvider extends AbstractProvider {
 
         String tempFilePath = TEMP_PATH + originalFilename;
         File tempFile = new File(tempFilePath);
+        if (tempFile.exists()) {
+            tempFilePath = TEMP_PATH.concat(RandomStringUtils.randomAlphanumeric(6)).concat(SymbolConstants.UNDERSCORE).concat(originalFilename);
+            tempFile = new File(tempFilePath);
+        }
         file.transferTo(tempFile);
-        UploadFile fileEntry = fileOperatingFactory.doUploadFileWithFolder(tempFile, "temp");
+        UploadFile fileEntry = fileOperatingFactory.doUploadFile(tempFile);
         return success(fileEntry);
     }
 }

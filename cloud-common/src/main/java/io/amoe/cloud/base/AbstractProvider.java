@@ -68,6 +68,10 @@ public class AbstractProvider {
         return getR(status, null);
     }
 
+    public R<Void> getResponse(IStatusEnum status, Object[] args) {
+        return getR(status, null, args);
+    }
+
     public <E> R<E> getResponse(IStatusEnum status, E object) {
         return getR(status, object);
     }
@@ -78,10 +82,14 @@ public class AbstractProvider {
     }
 
     private <E> R<E> getR(IStatusEnum status, E object) {
+        return getR(status, object, null);
+    }
+
+    private <E> R<E> getR(IStatusEnum status, E object, Object[] args) {
         Integer code = status.getCode();
         String defaultMessage = status.getMessage();
         String key = (KEY_PREFIX + status.getName()).toLowerCase();
-        String localeMessage = mg.getMessage(key, null, getCurrentLocale());
+        String localeMessage = mg.getMessage(key, args, getCurrentLocale());
         if (StringUtils.isBlank(localeMessage)) {
             localeMessage = defaultMessage;
         }

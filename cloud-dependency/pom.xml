@@ -46,7 +46,7 @@
         <caffeine.version>2.8.4</caffeine.version>
 
         <!--  aliyun  -->
-        <aliyun-sdk-oss.version>3.10.2</aliyun-sdk-oss.version>
+        <aliyun-sdk-oss.version>3.13.0</aliyun-sdk-oss.version>
         <aliyun-java-sdk-core.version>4.5.7</aliyun-java-sdk-core.version>
 
         <!--  plugins  -->

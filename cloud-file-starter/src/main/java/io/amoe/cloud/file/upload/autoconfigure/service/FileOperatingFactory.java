@@ -90,7 +90,7 @@ public class FileOperatingFactory implements InitializingBean {
         values.forEach(item -> {
             AbstractFileOperation operation = (AbstractFileOperation) item;
             if (type.equals(operation.getFileUploadType())) {
-                operation.setConfig(properties);
+                operation.checkAndInitConfig(properties);
             }
         });
     }

@@ -19,4 +19,5 @@ public interface SymbolConstants {
     String SLASH = "/";
     String BACKSLASH = "\\";
     String NEW_LINE = "\n";
+    String UNDERSCORE = "_";
 }

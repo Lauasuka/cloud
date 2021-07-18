@@ -56,8 +56,8 @@ public class GlobalExceptionHandler extends AbstractProvider {
     }
 
     @ResponseBody
-    @ExceptionHandler(BizException.class)
-    public R<Void> bizExceptionHandle(HttpServletResponse response, BizException ex) {
+    @ExceptionHandler(AbstractException.class)
+    public R<Void> bizExceptionHandle(HttpServletResponse response, AbstractException ex) {
         return customizeExceptionHandle(response, ex);
     }
 

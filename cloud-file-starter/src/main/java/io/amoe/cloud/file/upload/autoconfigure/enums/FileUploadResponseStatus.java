@@ -11,6 +11,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum FileUploadResponseStatus implements IStatusEnum {
     UPLOAD_FILE_ERROR(500, "上传文件错误"),
+    UPLOAD_FILE_CONFIG_ERROR(500, "文件上传服务配置错误"),
 
     UPLOAD_FILE_NULL(400, "上传文件不能为空"),
     UPLOAD_FILE_STORE_FOLDER_NULL(400, "上传文件存储目录不能为空"),

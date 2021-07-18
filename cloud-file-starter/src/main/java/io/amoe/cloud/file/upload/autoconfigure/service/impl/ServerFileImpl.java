@@ -12,13 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springframework.util.DigestUtils;
 import org.springframework.util.FileCopyUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -37,7 +35,7 @@ public class ServerFileImpl extends AbstractFileOperation implements IFileOperat
     private FileUploadProperties.Server config = null;
 
     @Override
-    protected void setConfig(FileUploadProperties properties) {
+    protected void checkAndInitConfig(FileUploadProperties properties) {
         final FileUploadProperties.Server server = properties.getServer();
         if (server == null) {
             throw new RuntimeException("Cloud file upload server config is not set");
@@ -82,14 +80,7 @@ public class ServerFileImpl extends AbstractFileOperation implements IFileOperat
         Assert.notNull(file, "Upload file should not be null");
 
         // init filename
-        final String fileHash = DigestUtils.md5DigestAsHex(new FileInputStream(file));
-        final String fileType = FileUtils.getFileType(file);
-        if (StringUtils.isBlank(fileName)) {
-            fileName = fileHash.concat(SymbolConstants.DOT).concat(fileType);
-        }
-        if (!fileName.contains(SymbolConstants.DOT)) {
-            fileName = fileName.concat(SymbolConstants.DOT).concat(fileType);
-        }
+        final FileBasicInfo fbi = initFileBasicInfo(file, fileName);
 
         // check file store dir
         String fileStorePath = StringUtils.isBlank(folder) ? config.getStorePath() : config.getStorePath().concat(File.separator).concat(folder);
@@ -106,12 +97,12 @@ public class ServerFileImpl extends AbstractFileOperation implements IFileOperat
         UploadFile dto = new UploadFile();
         dto.setIntranetUrl(config.getPrefixDomain().concat(SymbolConstants.SLASH).concat(suffix));
         dto.setInternetUrl(config.getPrefixDomain().concat(SymbolConstants.SLASH).concat(suffix));
-        dto.setFileHash(fileHash);
-        dto.setFileSize((long) fileSize);
-        dto.setName(fileName);
-        dto.setType(fileType);
+        dto.setFileHash(fbi.getFileHash());
+        dto.setFileSize(fbi.getFileSize());
+        dto.setName(fbi.getFileName());
+        dto.setType(fbi.getFileType());
         dto.setOriginalName(file.getName());
-        if (FileUtils.isImage(fileType)) {
+        if (FileUtils.isImage(fbi.getFileType())) {
             BufferedImage image = ImageIO.read(file);
             dto.setImageWidth(image.getWidth());
             dto.setImageHeight(image.getHeight());
