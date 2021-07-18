@@ -1,6 +1,6 @@
 package io.amoe.cloud.exception;
 
-import io.amoe.cloud.enums.BizResponseStatus;
+import io.amoe.cloud.enums.IStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,9 +10,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AbstractException extends RuntimeException {
-    private BizResponseStatus status;
+    private IStatusEnum status;
 
-    AbstractException(BizResponseStatus status) {
+    public AbstractException(IStatusEnum status) {
         super(status.getMessage());
         this.status = status;
     }

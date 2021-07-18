@@ -1,11 +1,9 @@
 package io.amoe.cloud.account.provider;
 
-import io.amoe.cloud.account.entity.SysFile;
 import io.amoe.cloud.account.service.ISysFileService;
 import io.amoe.cloud.base.AbstractProvider;
 import io.amoe.cloud.entity.R;
 import io.amoe.cloud.enums.BizResponseStatus;
-import io.amoe.cloud.enums.StatusType;
 import io.amoe.cloud.exception.BizException;
 import io.amoe.cloud.file.upload.autoconfigure.entity.UploadFile;
 import io.amoe.cloud.file.upload.autoconfigure.service.FileOperatingFactory;
@@ -45,7 +43,6 @@ public class SysFileProvider extends AbstractProvider {
             throw new BizException(BizResponseStatus.PARAM_ERROR);
         }
         String originalFilename = file.getOriginalFilename();
-        String fileName = RandomStringUtils.randomAlphanumeric(32);
 
         String tempFilePath = TEMP_PATH + originalFilename;
         File tempFile = new File(tempFilePath);

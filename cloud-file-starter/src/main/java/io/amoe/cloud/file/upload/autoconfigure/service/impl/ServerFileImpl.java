@@ -1,5 +1,6 @@
 package io.amoe.cloud.file.upload.autoconfigure.service.impl;
 
+import io.amoe.cloud.constant.SymbolConstants;
 import io.amoe.cloud.file.upload.autoconfigure.config.FileUploadProperties;
 import io.amoe.cloud.file.upload.autoconfigure.entity.UploadFile;
 import io.amoe.cloud.file.upload.autoconfigure.enums.FileUploadType;
@@ -9,8 +10,6 @@ import io.amoe.cloud.file.upload.autoconfigure.service.callback.IUploadFileCallb
 import io.amoe.cloud.tools.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
@@ -20,9 +19,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 
 /**
  * ServerFileImpl
@@ -33,10 +30,7 @@ import java.nio.file.Files;
 @Slf4j
 @Component
 public class ServerFileImpl extends AbstractFileOperation implements IFileOperatingStrategy {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServerFileImpl.class);
-
-    private static final String DEFAULT_SERVER_PATH = System.getProperty("java.io.tmpdir");
+    private static final String DEFAULT_SERVER_PATH = System.getProperty("user.home").concat(File.separator).concat("Upload_File_Temp").concat(File.separator);
 
     private FileUploadProperties.Server config = null;
 
@@ -83,17 +77,18 @@ public class ServerFileImpl extends AbstractFileOperation implements IFileOperat
         final String fileHash = DigestUtils.md5DigestAsHex(new FileInputStream(file));
         final String fileType = FileUtils.getFileType(file);
         if (StringUtils.isBlank(fileName)) {
-            fileName = fileHash.concat(".").concat(fileType);
+            fileName = fileHash.concat(SymbolConstants.DOT).concat(fileType);
         }
-        if (!fileName.contains(".")) {
-            fileName = fileName.concat(".").concat(fileType);
+        if (!fileName.contains(SymbolConstants.DOT)) {
+            fileName = fileName.concat(SymbolConstants.DOT).concat(fileType);
         }
         String newFilePath = config.getStorePath().concat(fileName);
+        log.info("File new store path is [{}]", newFilePath);
         final int fileSize = FileCopyUtils.copy(file, new File(newFilePath));
 
         UploadFile dto = new UploadFile();
-        dto.setIntranetUrl(config.getPrefixDomain().concat("/").concat(fileName));
-        dto.setInternetUrl(config.getPrefixDomain().concat("/").concat(fileName));
+        dto.setIntranetUrl(config.getPrefixDomain().concat(SymbolConstants.SLASH).concat(fileName));
+        dto.setInternetUrl(config.getPrefixDomain().concat(SymbolConstants.SLASH).concat(fileName));
         dto.setFileHash(fileHash);
         dto.setFileSize((long) fileSize);
         dto.setName(fileName);
@@ -109,7 +104,7 @@ public class ServerFileImpl extends AbstractFileOperation implements IFileOperat
                 callback.doCallback(dto);
             }
         } catch (Exception e) {
-            log.error("File upload callback run with error,please check,cause [{}] [{}]", e.getClass().getName(), e.getMessage(), e);
+            log.warn("File upload callback run with error,please check,cause [{}] [{}]", e.getClass().getName(), e.getMessage(), e);
         }
         return dto;
     }

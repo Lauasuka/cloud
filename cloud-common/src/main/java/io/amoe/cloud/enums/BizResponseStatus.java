@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum BizResponseStatus {
+public enum BizResponseStatus implements IStatusEnum {
     OK(200, "请求成功"),
     ERROR(500, "服务异常"),
 
@@ -28,4 +28,9 @@ public enum BizResponseStatus {
 
     private final Integer code;
     private final String message;
+
+    @Override
+    public String getName() {
+        return name();
+    }
 }

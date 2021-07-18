@@ -1,11 +1,10 @@
 package io.amoe.cloud.file.upload.autoconfigure.service;
 
 
-import io.amoe.cloud.enums.BizResponseStatus;
-import io.amoe.cloud.exception.BizException;
 import io.amoe.cloud.file.upload.autoconfigure.config.FileUploadProperties;
 import io.amoe.cloud.file.upload.autoconfigure.entity.UploadFile;
 import io.amoe.cloud.file.upload.autoconfigure.enums.FileUploadType;
+import io.amoe.cloud.file.upload.autoconfigure.exceptions.FileUploadException;
 import io.amoe.cloud.file.upload.autoconfigure.service.callback.IUploadFileCallback;
 import io.amoe.cloud.tools.SpringContextUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +15,6 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -57,7 +54,7 @@ public class FileOperatingFactory implements InitializingBean {
                 return strategy.doUploadFile(file, fileName, callback);
             }
         }
-        throw new BizException(BizResponseStatus.ERROR);
+        throw new FileUploadException();
     }
 
     @Override

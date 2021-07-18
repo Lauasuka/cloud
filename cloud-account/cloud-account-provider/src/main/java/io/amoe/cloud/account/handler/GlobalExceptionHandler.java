@@ -1,8 +1,10 @@
 package io.amoe.cloud.account.handler;
 
 import io.amoe.cloud.base.AbstractProvider;
+import io.amoe.cloud.constant.SymbolConstants;
 import io.amoe.cloud.entity.R;
 import io.amoe.cloud.enums.BizResponseStatus;
+import io.amoe.cloud.enums.IStatusEnum;
 import io.amoe.cloud.exception.AbstractException;
 import io.amoe.cloud.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +36,7 @@ import java.util.Optional;
 public class GlobalExceptionHandler extends AbstractProvider {
 
     private R<Void> customizeExceptionHandle(HttpServletResponse response, AbstractException ex) {
-        BizResponseStatus status = ex.getStatus();
+        IStatusEnum status = ex.getStatus();
         response.setStatus(status.getCode());
         R<Void> r = getResponse(status);
         logError(ex, r.getMsg());
@@ -66,8 +68,8 @@ public class GlobalExceptionHandler extends AbstractProvider {
         BindingResult bindingResult = ex.getBindingResult();
         List<ObjectError> errors = bindingResult.getAllErrors();
         String msg = errors.stream().findFirst().map(DefaultMessageSourceResolvable::getDefaultMessage).orElseThrow(() -> new BizException(BizResponseStatus.PARAM_ERROR));
-        if (msg.startsWith("{") && msg.endsWith("}")) {
-            String placeholder = msg.replace("{", "").replace("}", "");
+        if (msg.startsWith(SymbolConstants.OPEN_BRACE) && msg.endsWith(SymbolConstants.CLOSE_BRACE)) {
+            String placeholder = msg.replace(SymbolConstants.OPEN_BRACE, "").replace(SymbolConstants.CLOSE_BRACE, "");
             msg = mg.getMessage(placeholder, null, getCurrentLocale());
         }
         logError(ex, msg);

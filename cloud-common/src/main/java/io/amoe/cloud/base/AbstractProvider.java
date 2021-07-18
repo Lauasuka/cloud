@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.amoe.cloud.entity.PageData;
 import io.amoe.cloud.entity.R;
 import io.amoe.cloud.enums.BizResponseStatus;
+import io.amoe.cloud.enums.IStatusEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -63,11 +64,11 @@ public class AbstractProvider {
         return getR(BizResponseStatus.ERROR, object);
     }
 
-    public R<Void> getResponse(BizResponseStatus status) {
+    public R<Void> getResponse(IStatusEnum status) {
         return getR(status, null);
     }
 
-    public <E> R<E> getResponse(BizResponseStatus status, E object) {
+    public <E> R<E> getResponse(IStatusEnum status, E object) {
         return getR(status, object);
     }
 
@@ -76,10 +77,10 @@ public class AbstractProvider {
         response.setStatus(HttpServletResponse.SC_FOUND);
     }
 
-    private <E> R<E> getR(BizResponseStatus status, E object) {
+    private <E> R<E> getR(IStatusEnum status, E object) {
         Integer code = status.getCode();
         String defaultMessage = status.getMessage();
-        String key = (KEY_PREFIX + status.name()).toLowerCase();
+        String key = (KEY_PREFIX + status.getName()).toLowerCase();
         String localeMessage = mg.getMessage(key, null, getCurrentLocale());
         if (StringUtils.isBlank(localeMessage)) {
             localeMessage = defaultMessage;
